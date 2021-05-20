@@ -6,7 +6,8 @@ public class Operation {
 	
 	public String Booking(String UID, Date Ddate, Date Rdate, // Ddate出發時間, Rdate返程時間
 			String SStation, String DStation, //S始站, D終戰
-			int normalT, int concessionT, int studentT, int AorW) //一般票, 優待票, 大學生票, 走道or靠窗
+			int normalT, int concessionT, int studentT, //一般票, 優待票, 大學生票
+			int AorW, boolean BorS) // 走道or靠窗, 商務或標準車廂
 	{
 		if ((normalT+concessionT+studentT > 10) || ((Rdate != new Date(0))&&(normalT+concessionT+studentT > 5))) {
 			return "失敗，因訂單預定過多車票(每筆最多10張，來回車票獨立計算)";
