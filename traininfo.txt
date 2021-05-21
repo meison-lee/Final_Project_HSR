@@ -1,0 +1,13 @@
+class高鐵
+Int 車次
+Enum 北下/南上
+String停靠站代號
+String 停靠時間
+Enum行駛時間
+String 起始站 
+String 終點站
+Enum (一般車票/早鳥/大學生)
+每個人的getter setter
+Public method 車票資訊(判斷是否為早鳥/大學生車票、提供資訊)
+Private method早鳥資訊(依照早鳥票算價錢)
+Private method大學生資訊(依照大學生車票算價錢)
