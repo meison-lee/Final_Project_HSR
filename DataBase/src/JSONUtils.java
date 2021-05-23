@@ -3,6 +3,7 @@
 import java.io.InputStream;
 import java.util.Scanner;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JSONUtils {
@@ -20,6 +21,10 @@ public class JSONUtils {
 		return new JSONObject(getJSONStringFromFile(path));
 	}
 	
+	public static JSONArray getJSONArrayFromFile(String path) {
+		return new JSONArray(getJSONStringFromFile(path));
+	}
+	
 	public static boolean objectExists(JSONObject jsonObject, String key) {
 		Object o;
 		try {
@@ -29,5 +34,4 @@ public class JSONUtils {
 		}
 		return o != null;
 	}
-	
 }
