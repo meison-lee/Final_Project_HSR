@@ -42,6 +42,7 @@ public class ExampletoUse {
 
 		//=============================video example=============================
 
+		/*
 		//=============================early discount=============================
 		JSONObject obj = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
 		String[] names = JSONObject.getNames(obj);
@@ -114,6 +115,7 @@ public class ExampletoUse {
 		}
 		  
 		  System.out.print("\n");
+		 */
 	}
 
 }

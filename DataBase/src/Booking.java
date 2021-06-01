@@ -1,11 +1,9 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 
 public class Booking {
 	JSONObject obj = JSONUtils.getJSONObjectFromFile("/timeTable.json");
@@ -67,9 +65,9 @@ public class Booking {
 		}
 		
 
-		//將符合時間的列車編號做成表格
-		ArrayList<String> Davailable = new ArrayList<String>();
-		ArrayList<String> Ravailable = new ArrayList<String>();
+		//將符合條件的列車編號做成JSONArray
+		JSONArray Davailable = null;
+		JSONArray Ravailable = null;
 		
 		/*    確認順序為：
 		 * 1. 確認方向 Direction
@@ -93,7 +91,7 @@ public class Booking {
 				&& (dparturetime(Dtime, SStation, timetable.getJSONArray("StopTimes")))) 
 				//確認出發時間
 			{
-				Davailable.add(timetable.getJSONObject("GeneralTrainInfo").getString("TrainNo"));
+				Davailable.put(train);
 			}
 			
 			//回程
@@ -106,16 +104,33 @@ public class Booking {
 				&& (dparturetime(Rtime, DStation, timetable.getJSONArray("StopTimes")))) 
 				//確認出發時間
 			{
-				Ravailable.add(timetable.getJSONObject("GeneralTrainInfo").getString("TrainNo"));
+				Ravailable.put(train);
 			}
 		}
 		
+		//處理票量問題
 		
+		//早鳥票 (有折扣跟票數) (票數要處理)
+		JSONObject earlyDiscount = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
+		JSONArray EDTrains = earlyDiscount.getJSONArray("DiscountTrains");
 		
-		for(int i = 0; i < jsonArray.length(); i++) {
-			System.out.println(jsonArray.get(i));
+		//大學生票 (只有折扣)
+		JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
+		JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
+		
+		//整車正常票(分一般與商務)
+		
+		//excel檔?
+		
+		for(int i = 0; i < Davailable.length(); i++) {
+			System.out.println(Davailable.get(i));
 		}
 		
+		for(int i = 0; i < Ravailable.length(); i++) {
+			System.out.println(Ravailable.get(i));
+		}
+		
+		//輸出錯誤結果
 		
 		if ((normalT+concessionT+studentT > 10) || ((Rdate != null)&&(normalT+concessionT+studentT > 5))) {
 			return "失敗，因訂單預定過多車票(每筆最多10張，來回車票獨立計算)";
@@ -123,6 +138,20 @@ public class Booking {
 		
 		if (Dedate.after(null) || Redate.after(null)) {
 			return "失敗，因尚未能預約";
+		}
+		
+		//輸出搜尋結果
+		
+		System.out.println("去程列車如下：\n");
+			
+		for(int i = 0; i < Davailable.length(); i++) {
+			System.out.println(Davailable.get(i));
+		}
+		
+		System.out.println("回程列車如下：\n");
+		
+		for(int i = 0; i < Ravailable.length(); i++) {
+			System.out.println(Ravailable.get(i));
 		}
 		
 		/*下面兩個要參考我們怎麼處理資料
@@ -183,6 +212,11 @@ public class Booking {
 		}
 		else return false;
 	}
+	
+	/**
+	 * @param date
+	 * @return 該日期的星期
+	 */
 	
 	private String getWeekofDay(Date date) {
 		
