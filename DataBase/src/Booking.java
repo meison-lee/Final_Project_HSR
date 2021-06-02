@@ -1,5 +1,6 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -163,20 +164,81 @@ public class Booking {
 			Limitdate.add(Calendar.DAY_OF_MONTH, -23);
 			
 			//去程
+			ArrayList<Double> DEDdiscount = null;
+			
+			//確認是否於五日前
 			if (Limitdate.after(Dedate)) {
 				System.out.println("去程日期列車已不提供早鳥票訂購");
 			}
 			else {
+				//外圈為去程的JSONArray
+				for(int j = 0; j < Davailable.length(); j++) {
+					//內圈1為所有ED的JSONArray
+					ED: for(int i = 0; i < EDTrains.length(); i++) {
+						//若找到對應的列車
+						if (TrainNoofED(EDTrains, i) == TrainNoofAv(Davailable, j)) {
+							//將該列車的ED資訊提出
+							JSONArray thatdayED = EDTrains.getJSONObject(i).getJSONObject("ServiceDayDiscount").getJSONArray(WoDD);
+							
+							//提出該星期的折價資料並查詢是否還有剩票，並將折價存進REDdiscount中，並跳出ED迴圈，若都沒票則存入1.0(無折價)，同樣跳出ED迴圈
+							for (int k = 0; k < thatdayED.length(); k++) {
+								if (thatdayED.getJSONObject(k).getInt("tickets") > 0) {
+									DEDdiscount.add(thatdayED.getJSONObject(k).getDouble("0.65"));
+									break ED;
+								}
+								else if (k == thatdayED.length()) {
+									DEDdiscount.add(1.0);
+									break ED;
+								}
+								else;
+							}
+						}
+						else;
+					}
+				}
 				//搜尋班次的折價與以及是否還有位子
 			}
 			
-			//回程
-			if (Limitdate.after(Redate)) {
-				System.out.println("回程日期列車已不提供早鳥票訂購");
+			
+			
+			//回程 先確認是否有回程
+			if (Rdate != null) {
+				ArrayList<Double> REDdiscount = null;
+				
+				//確認是否於五日前
+				if (Limitdate.after(Redate)) {
+					System.out.println("回程日期列車已不提供早鳥票訂購");
+				}
+				else {
+					//外圈為回程的JSONArray
+					for(int j = 0; j < Ravailable.length(); j++) {
+						//內圈1為所有ED的JSONArray
+						ED: for(int i = 0; i < EDTrains.length(); i++) {
+							//若找到對應的列車
+							if (TrainNoofED(EDTrains, i) == TrainNoofAv(Ravailable, j)) {
+								//將該列車的ED資訊提出
+								JSONArray thatdayED = EDTrains.getJSONObject(i).getJSONObject("ServiceDayDiscount").getJSONArray(WoDR);
+								
+								//提出該星期的折價資料並查詢是否還有剩票，並將折價存進REDdiscount中，並跳出ED迴圈，若都沒票則存入1.0(無折價)，同樣跳出ED迴圈
+								for (int k = 0; k < thatdayED.length(); k++) {
+									if (thatdayED.getJSONObject(k).getInt("tickets") > 0) {
+										REDdiscount.add(thatdayED.getJSONObject(k).getDouble("0.65"));
+										break ED;
+									}
+									else if (k == thatdayED.length()) {
+										REDdiscount.add(1.0);
+										break ED;
+									}
+									else;
+								}
+							}
+							else;
+						}
+					}
+					//搜尋班次的折價與以及是否還有位子
+				}
 			}
-			else {
-				//搜尋班次的折價與以及是否還有位子
-			}
+			else;
 		
 		//大學生票 (只有折扣)
 		/*
@@ -245,6 +307,31 @@ public class Booking {
 		/* 失敗，因為該時段車次座位已售罄*/
 		
 		return null;
+	}
+	
+	
+	/**
+	 * 此method方便找查Ravailable中的TrainNo
+	 * 
+	 * @param Ravailable
+	 * @param which 第幾個
+	 * @return 該位置的TrainNo
+	 */
+	
+	public static String TrainNoofAv(JSONArray Ravailable, int which) {
+		return Ravailable.getJSONObject(which).getJSONObject("GeneralTimetable").getJSONObject("GeneralTimeInfo").getString("TrainNo");
+	}
+	
+	/**
+	 * 此method方便找查earlyDiscount中的TrainNo
+	 * 
+	 * @param EDTrains
+	 * @param which 第幾個
+	 * @return 該位置的TrainNo
+	 */
+	
+	public static String TrainNoofED(JSONArray EDTrains, int which) {
+		return EDTrains.getJSONObject(which).getString("TrainNo");
 	}
 	
 	/**
