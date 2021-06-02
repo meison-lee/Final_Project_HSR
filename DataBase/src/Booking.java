@@ -118,6 +118,8 @@ public class Booking {
 		JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
 		JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
 		
+		//優待票 (各類價格)
+		
 		//整車正常票(分一般與商務)
 		
 		//excel檔?
