@@ -30,6 +30,14 @@ public class Booking {
 		
 		//處理時間
 		
+		//Calendar用來操作
+
+		//今天時間
+		long current = System.currentTimeMillis();
+		Date ttoday = new Date(current);
+		Calendar today = Calendar.getInstance();
+		today.setTime(ttoday);
+		
 		//去程
 		Date Dedate  = null; //Date object
 		String WoDD  = null; //week of day
@@ -64,6 +72,22 @@ public class Booking {
 			Rtime = Rdate.substring(11);
 		}
 		
+		//日期期限 (今日的30天之後)
+		Calendar Limitdate = today;
+		Limitdate.add(Calendar.DAY_OF_MONTH, 28);
+		
+		//確認當日時間是否可供訂票
+		if(Limitdate.before(Dedate)) {
+			if(Limitdate.before(Redate)) {
+				return "去回程列車皆尚未開放訂票";
+			}
+			else {
+				return "去程列車皆尚未開放訂票";
+			}
+		}
+		else {
+			//無問題
+		}
 
 		//將符合條件的列車編號做成JSONArray
 		JSONArray Davailable = null;
@@ -110,17 +134,46 @@ public class Booking {
 		
 		//處理票量問題
 		
+		//商務則沒有各種優待票
+		if (BorS == false) {
+			
 		//早鳥票 (有折扣跟票數) (票數要處理)
-		JSONObject earlyDiscount = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
-		JSONArray EDTrains = earlyDiscount.getJSONArray("DiscountTrains");
+			JSONObject earlyDiscount = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
+			JSONArray EDTrains = earlyDiscount.getJSONArray("DiscountTrains");
+			
+			//把limitdate改為今日後五天(28-23)
+			Limitdate.add(Calendar.DAY_OF_MONTH, -23);
+			
+			//去程
+			if (Limitdate.after(Dedate)) {
+				System.out.println("去程日期列車已不提供早鳥票訂購");
+			}
+			else {
+				//搜尋班次的折價與以及是否還有位子
+			}
+			
+			//回程
+			if (Limitdate.after(Redate)) {
+				System.out.println("回程日期列車已不提供早鳥票訂購");
+			}
+			else {
+				//搜尋班次的折價與以及是否還有位子
+			}
 		
 		//大學生票 (只有折扣)
-		JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
-		JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
-		
+			JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
+			JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
+			
+			int Nofstudent = studentT;
+			
 		//優待票 (各類價格)
 		
 		//整車正常票(分一般與商務)
+			
+			
+		}
+		
+		
 		
 		//excel檔?
 		
