@@ -16,6 +16,12 @@ public class Booking {
 			int normalT, int concessionT, int studentT, //一般票, 優待票, 大學生票
 			int AorW, boolean BorS) // 走道or靠窗, 商務或標準車廂
 	{
+		//票種檢查
+		/*
+		 * 每筆交易至多可預訂10張票，
+		 * 不限身份，去回程至多可預訂各5張。
+		 */
+		
 		//處理方向
 		
 		//去程方向(記去程就好)
@@ -71,6 +77,12 @@ public class Booking {
 			
 			Rtime = Rdate.substring(11);
 		}
+		
+		/*
+		 * 提供預訂當日及未來28日以內之車票。
+		 * 訂位開放時間為乘車日(含)前28日凌晨0點開始，
+		 * 當日車次之預訂僅受理至列車出發時間前1小時為止
+		 */
 		
 		//日期期限 (今日的30天之後)
 		Calendar Limitdate = today;
@@ -138,6 +150,12 @@ public class Booking {
 		if (BorS == false) {
 			
 		//早鳥票 (有折扣跟票數) (票數要處理)
+		/*
+		 * 早鳥優惠僅適用於標準車廂對號座全票。
+		 * 早鳥優惠車票，自乘車日（含）前 28 日起開始限量發售，最晚發售至乘車日（含）前 5 日截止。
+		 * 愈早訂位者，愈有機會訂得 65 折優惠車票。
+		 * 早鳥 65 折銷售完畢即改發售早鳥 8 折，早鳥 8 折銷售完畢即改發售早鳥 9 折，早鳥 9 折銷售完畢即提前截止並改發售原價車票。
+		 */
 			JSONObject earlyDiscount = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
 			JSONArray EDTrains = earlyDiscount.getJSONArray("DiscountTrains");
 			
@@ -161,6 +179,10 @@ public class Booking {
 			}
 		
 		//大學生票 (只有折扣)
+		/*
+		 * 大學生優惠（5折/75折/88折）票恕無法與其他優惠合併使用。
+		 */
+		
 			JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
 			JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
 			
@@ -173,6 +195,9 @@ public class Booking {
 			
 		}
 		
+		/*
+		 * 座位喜好功能係依列車訂位概況媒合您期望的座位，如該車次已無合適座位時，為讓您仍可順利完成訂票作業，將由系統自動配置座位。座位喜好功能僅適用於單人乘客。
+		 */
 		
 		
 		//excel檔?
@@ -211,9 +236,9 @@ public class Booking {
 		
 		/*下面兩個要參考我們怎麼處理資料
 		 * 大致上如下
-		 * 1. 建list儲存班次編號
+		 * 1. 建一個JSONArray用來儲存符合條件的列次資料
 		 * 2. 檢查各種條件 (各個票種, AorW, 時間)，將符合條件的班次存入list
-		 * 3. 透過list輸出各班次資訊
+		 * 3. 透過此JSONArray輸出各班次資訊
 		 */
 		
 		/* 列出該時段符合條件的車次*/
