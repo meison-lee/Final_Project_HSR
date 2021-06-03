@@ -9,12 +9,13 @@ public class runner {
 		
 		JSONArray train = JSONUtils.getJSONArrayFromFile("/timeTable.json");
 		
-		for (int i = 0; i < train.length(); i++) {
-			System.out.println(train.getJSONObject(i));
-		}
+		System.out.println(train.length());
+		
 		if(train.getJSONObject(0).getJSONObject("GeneralTimetable").getJSONObject("ServiceDay").getInt("Monday") == 1) {
 			System.out.println(train.getJSONObject(0).getJSONObject("GeneralTimetable").getJSONObject("GeneralTrainInfo").get("TrainNo"));
 		}
 	}
+	
+	
 
 }

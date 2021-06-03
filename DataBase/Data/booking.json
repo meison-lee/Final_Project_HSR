@@ -4,6 +4,7 @@
         "uid": "A123456789",
         "ticketInfo":[
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
@@ -12,6 +13,7 @@
                 "seats": ["0413A"]
             },
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
@@ -28,6 +30,7 @@
         "uid": "C123456789",
         "ticketInfo":[
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "business",
                 "ticketsCount" : 2,
@@ -36,6 +39,7 @@
                 "seats": ["0611C"]
             },
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "business",
                 "ticketsCount" : 1,
