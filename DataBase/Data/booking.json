@@ -8,8 +8,8 @@
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
-                "start" : "0990",
-                "end" : "1070",
+                "start" : "0110",
+                "end" : "0190",
                 "seats": ["0413A"]
             },
             {
@@ -17,8 +17,8 @@
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
-                "start" : "0990",
-                "end" : "1070",
+                "start" : "0190",
+                "end" : "0110",
                 "seats": ["0413A"]
             }
         ],
@@ -33,7 +33,7 @@
             	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "business",
-                "ticketsCount" : 2,
+                "ticketsCount" : 1,
                 "start" : "1070",
                 "end" : "0990",
                 "seats": ["0611C"]
@@ -49,6 +49,6 @@
             }
         ],
         "payDeadline" : "2021-05-25",
-        "payment" : 1200
+        "payment" : 800
     }
 ]
