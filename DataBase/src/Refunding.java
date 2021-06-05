@@ -1,5 +1,11 @@
 import org.json.*;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,6 +14,7 @@ private String start,trainNumber,code,Date;
 private String []seats;
 private String time;
 private int hour,min;
+private int number,remainPeople;
 
 
 
@@ -15,15 +22,16 @@ private int hour,min;
 	JSONObject obj = JSONUtils.getJSONObjectFromFile("/timeTable.json");
 	JSONArray jsonArray = obj.getJSONArray("Array");
 
-	public String Refund (String UID, String ticketCode , int people) {
+	public String Refund (String UID, String ticketCode , int people) throws IOException {
 		for (int i = 0; i < arrayofbooking.length(); i++) {
 			JSONObject date = arrayofbooking.getJSONObject(i);
 			String temporcode = date.getString("code");
 			if (temporcode.contentEquals(ticketCode)) {
+				number = i;
 				code = temporcode;
 				JSONArray ticketInfo = date.getJSONArray("ticketInfo");
 				start = ticketInfo.getJSONObject(0).getString("start");
-				trainNumber = ticketInfo.getJSONObject(0).getString("trainNumber");
+				trainNumber = ticketInfo.getJSONObject(0).getString("trainNo");
 				Date = ticketInfo.getJSONObject(0).getString("date");
 				for (int m = 0; m <ticketInfo.getJSONObject(0).getJSONArray("seats").length(); m++) {
 					seats = new String[ticketInfo.getJSONObject(0).getJSONArray("seats").length()];
@@ -72,10 +80,13 @@ private int hour,min;
 			if(Integer.parseInt(DateArray[1]) >= Integer.parseInt(today[0]) && Integer.parseInt(DateArray[2]) >= Integer.parseInt(today[1])) {
 				if(hour >= Integer.parseInt(today[2]) && min >= Integer.parseInt(today[3])) {
 					if (seats.length == people) {
-						deleteticket();
+						DeleteTicket("Data/booking.json","booking.json",number);		
+						return "退票成功，已取消您的訂位紀錄";
 					}
 					else {
-						conditionrefund();
+						remainPeople = seats.length - people;
+						ConditionRefund("Data/booking.json","booking.json",number,remainPeople);
+						return "修改成功，已將您人數變更為" + remainPeople + "位";
 					}
 				}
 				else
@@ -90,6 +101,48 @@ private int hour,min;
 					
 		
 	}
+	private void DeleteTicket(String writer , String filelocation , int number) throws IOException {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(writer));			
+			
+			JSONArray dataJSON = JSONUtils.getJSONArrayFromFile(filelocation);      
+			dataJSON.remove(number);														
+			String ws = dataJSON.toString();		
+			bw.write(ws);
+			bw.flush();
+			bw.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
+	private void ConditionRefund(String writer , String filelocation , int number , int remainPeople) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(writer));
+		
+		JSONArray dataJSON = JSONUtils.getJSONArrayFromFile(filelocation);
+		String ticketsCount = "ticketsCount";
+		String s = "seats";
+		
+		JSONArray ticketInfo = dataJSON.getJSONObject(number).getJSONArray("ticketInfo");
+		for ( int i = 0 ; i < ticketInfo.length() ; i++ ) {
+			ticketInfo.getJSONObject(i).remove(ticketsCount);
+			ticketInfo.getJSONObject(i).put(ticketsCount,remainPeople);
+			ticketInfo.getJSONObject(i).getJSONArray(s).clear();
+			for (int j = 0; j < remainPeople; j++) {
+				ticketInfo.getJSONObject(i).getJSONArray(s).put(j,seats[j]);    //從後面開始刪
+			}
+		}
+		String ws = dataJSON.toString();
+		bw.write(ws);
+		bw.flush();
+		bw.close();
+	}
+	
+//	public static void main(String []arg) throws IOException {
+//		Refunding r = new Refunding();
+//		System.out.println(r.Refund("A123456789", "123456789", 1));
+//	}
 
 }
