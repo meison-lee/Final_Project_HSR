@@ -69,10 +69,11 @@ public class testjsonfile {
 			e.printStackTrace();
 		}
 	}
-	public static void main(String[]arg) throws IOException {
+	
+	/*public static void main(String[]arg) throws IOException {
 		testjsonfile n = new testjsonfile();
 		n.throwdata();
 		n.getdata();
-	}
+	}*/
 
 }

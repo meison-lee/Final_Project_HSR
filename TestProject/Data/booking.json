@@ -4,6 +4,7 @@
         "uid": "A123456789",
         "ticketInfo":[
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
@@ -12,6 +13,7 @@
                 "seats": ["0413A"]
             },
             {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "standard",
                 "ticketsCount" : 1,
@@ -28,23 +30,25 @@
         "uid": "C123456789",
         "ticketInfo":[
             {
-                "date" : "2021-06-01",
-                "ticketsType" : "business",
-                "ticketsCount" : 2,
-                "start" : "0110",
-                "end" : "0190",
-                "seats": ["0611C"]
-            },
-            {
+            	"TrainNo" : "0000",
                 "date" : "2021-06-01",
                 "ticketsType" : "business",
                 "ticketsCount" : 1,
-                "start" : "0190",
-                "end" : "0110",
+                "start" : "1070",
+                "end" : "0990",
+                "seats": ["0611C"]
+            },
+            {
+            	"TrainNo" : "0000",
+                "date" : "2021-06-01",
+                "ticketsType" : "business",
+                "ticketsCount" : 1,
+                "start" : "0990",
+                "end" : "1070",
                 "seats": ["0617A"]
             }
         ],
         "payDeadline" : "2021-05-25",
-        "payment" : 1200
+        "payment" : 800
     }
 ]
