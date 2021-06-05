@@ -12,21 +12,23 @@ public class testjsonfile {
 
 	public static void main(String[] args) throws IOException {
 		try {
-			FileReader h = new FileReader("Data/price.json");
+			FileReader h = new FileReader("Data/file.json");
 			BufferedReader tr = new BufferedReader(h);
-			BufferedWriter bw = new BufferedWriter(new FileWriter("Data/test.json"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("Data/booking.json"));
 			String str = null;
-			System.out.println(tr.readLine());
+			String data = "";
 			while ((str = tr.readLine()) != null) {
-				System.out.println(str);
+				data = data + str+"\n";
 			}
 			
 					
-//			JSONArray dataJSON = new JSONArray(data);
+			JSONArray dataJSON = new JSONArray(data);
+			System.out.println(dataJSON.length());
+//			dataJSON.remove(0);
 //			dataJSON.getJSONObject(0).remove("code");
-//			String ws = dataJSON.toString();
-//			System.out.println(ws);
-//			bw.write(ws);
+			String ws = dataJSON.toString();
+			System.out.println(ws);
+			bw.write(ws);
 			bw.flush();
 			tr.close();
 			bw.close();
