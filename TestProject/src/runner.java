@@ -30,13 +30,18 @@ public class runner {
 		}
 	}
 
+<<<<<<< Updated upstream
 	public static void main(String[] args) throws IOException {
+=======
+	/*public static void main(String[] args) {
+>>>>>>> Stashed changes
 		JSONArray arrayofbooking = JSONUtils.getJSONArrayFromFile("/booking.json");
 		System.out.println(arrayofbooking.get(0));
 		System.out.println(arrayofbooking.get(1));
 		
 		JSONArray train = JSONUtils.getJSONArrayFromFile("/timeTable.json");
 		
+<<<<<<< Updated upstream
 		
 		runner tester = new runner();
 		
@@ -47,4 +52,14 @@ public class runner {
 		tester.JSONArraydeleter(writer, filelocation, which);
 		
 	}
+=======
+		for (int i = 0; i < train.length(); i++) {
+			System.out.println(train.getJSONObject(i));
+		}
+		if(train.getJSONObject(0).getJSONObject("GeneralTimetable").getJSONObject("ServiceDay").getInt("Monday") == 1) {
+			System.out.println(train.getJSONObject(0).getJSONObject("GeneralTimetable").getJSONObject("GeneralTrainInfo").get("TrainNo"));
+		}
+	}*/
+
+>>>>>>> Stashed changes
 }
