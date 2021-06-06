@@ -31,6 +31,13 @@ public class runner {
 	}
 
 	public static void main(String[] args) throws IOException {
+		
+		JSONArray timetable = JSONUtils.getJSONArrayFromFile("/timetable.json");
+		JSONObject earlyDiscount = JSONUtils.getJSONObjectFromFile("/earlyDiscount.json");
+		
+		System.out.println(timetable.length());
+		System.out.println(earlyDiscount.getJSONArray("DiscountTrains").length());
+		
 		JSONArray arrayofbooking = JSONUtils.getJSONArrayFromFile("/booking.json");
 		System.out.println(arrayofbooking.get(0));
 		System.out.println(arrayofbooking.get(1));
