@@ -19,8 +19,7 @@ private int number,remainPeople;
 
 
 	JSONArray arrayofbooking = JSONUtils.getJSONArrayFromFile("/booking.json");
-	JSONObject obj = JSONUtils.getJSONObjectFromFile("/timeTable.json");
-	JSONArray jsonArray = obj.getJSONArray("Array");
+	JSONArray obj = JSONUtils.getJSONArrayFromFile("/timeTable.json");
 
 	public String Refund (String UID, String ticketCode , int people) throws IOException {
 		for (int i = 0; i < arrayofbooking.length(); i++) {
@@ -31,19 +30,18 @@ private int number,remainPeople;
 				code = temporcode;
 				JSONArray ticketInfo = date.getJSONArray("ticketInfo");
 				start = ticketInfo.getJSONObject(0).getString("start");
-				trainNumber = ticketInfo.getJSONObject(0).getString("trainNo");
+				trainNumber = ticketInfo.getJSONObject(0).getString("TrainNo");
 				Date = ticketInfo.getJSONObject(0).getString("date");
+				seats = new String[ticketInfo.getJSONObject(0).getJSONArray("seats").length()];
 				for (int m = 0; m <ticketInfo.getJSONObject(0).getJSONArray("seats").length(); m++) {
-					seats = new String[ticketInfo.getJSONObject(0).getJSONArray("seats").length()];
 					seats[m] = ticketInfo.getJSONObject(0).getJSONArray("seats").getString(m);
 					}
 				//get seats的array方便之後刪掉位子
 				}
 		}
 		//booking variables : code , start , train number , Date , seats array
-		
-		for(int j = 0; j < jsonArray.length(); j++) {	
-		    JSONObject train = jsonArray.getJSONObject(j);
+		for(int j = 0; j < obj.length(); j++) {	
+		    JSONObject train = obj.getJSONObject(j);
 		    JSONObject timetable = train.getJSONObject("GeneralTimetable");
 		    String trainNo = timetable.getJSONObject("GeneralTrainInfo").getString("TrainNo");
 		    if (trainNo.contentEquals(trainNumber)) {
@@ -78,7 +76,8 @@ private int number,remainPeople;
 		
 		if (code.contentEquals(ticketCode)) {
 			if(Integer.parseInt(DateArray[1]) >= Integer.parseInt(today[0]) && Integer.parseInt(DateArray[2]) >= Integer.parseInt(today[1])) {
-				if(hour >= Integer.parseInt(today[2]) && min >= Integer.parseInt(today[3])) {
+				if((Integer.parseInt(DateArray[1]) >= Integer.parseInt(today[0]) && Integer.parseInt(DateArray[2]) >= Integer.parseInt(today[1]))
+						|| (hour >= Integer.parseInt(today[2]) && min >= Integer.parseInt(today[3]))) {
 					if (seats.length == people) {
 						DeleteTicket("Data/booking.json","booking.json",number);		
 						return "退票成功，已取消您的訂位紀錄";
@@ -97,7 +96,7 @@ private int number,remainPeople;
 				
 			}
 		else
-			return "退票/修改失敗，此訂位代號不存在\r\n";
+			return "退票/修改失敗，此訂位代號不存在";
 					
 		
 	}
@@ -140,9 +139,9 @@ private int number,remainPeople;
 		bw.close();
 	}
 	
-//	public static void main(String []arg) throws IOException {
-//		Refunding r = new Refunding();
-//		System.out.println(r.Refund("A123456789", "123456789", 1));
-//	}
+	public static void main(String []arg) throws IOException {
+		Refunding r = new Refunding();
+		System.out.println(r.Refund("A123456789", "123456789", 1));
+	}
 
 }
