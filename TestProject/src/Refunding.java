@@ -139,9 +139,9 @@ private int number,remainPeople;
 		bw.close();
 	}
 	
-	public static void main(String []arg) throws IOException {
-		Refunding r = new Refunding();
-		System.out.println(r.Refund("A123456789", "123456789", 1));
-	}
+//	public static void main(String []arg) throws IOException {
+//		Refunding r = new Refunding();
+//		System.out.println(r.Refund("A123456789", "123456789", 1));
+//	}
 
 }
