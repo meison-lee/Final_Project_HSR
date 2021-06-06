@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import org.json.*;
 
 public class test {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         ArrayList<String> list = new ArrayList<String>(); 
         list.add("admin");
         //Åª¨újsonÀÉ®×
@@ -38,5 +38,5 @@ public class test {
         } catch (JSONException e) {
 		    e.printStackTrace();
 		}
-    }
+    }*/
 }
