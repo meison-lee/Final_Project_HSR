@@ -1,4 +1,3 @@
-package jjson;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,8 +8,8 @@ import java.io.IOException;
 
 public class searchDB {
 public static String getSeatno(String train ,String start,String end) throws IOException {
-		
-		BufferedReader rDB = new BufferedReader(new FileReader("C://NTU/table.csv"));
+		String sss="shit";
+		BufferedReader rDB = new BufferedReader(new FileReader("C://NTU/"+sss+".csv"));
 		 //§ä¨ì«ü©wtrain
 		 //System.out.println("here");
 		 String line=rDB.readLine();
