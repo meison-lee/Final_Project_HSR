@@ -9,10 +9,10 @@ import java.io.IOException;
 public class searchDB {
 
 	/**
-	 * @param train(列車號碼
+	 * @param train(列車號碼)
 	 * @param start
 	 * @param end
-	 * @param number(票數
+	 * @param number(票數)
 	 * @return
 	 * @throws IOException
 	 */
@@ -115,11 +115,11 @@ public class searchDB {
 	}
 
 	/**
-	 * @param train(列車號碼
+	 * @param train(列車號碼)
 	 * @param start
 	 * @param end
-	 * @param number(票數
-	 * @param kind(只能填window or aisle 但我沒有寫偵錯
+	 * @param number(票數)
+	 * @param kind(只能填window or aisle 但我沒有寫偵錯)
 	 * @return
 	 * @throws IOException
 	 */

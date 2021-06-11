@@ -254,6 +254,7 @@ public class Test2 {
 		}
 	}
 
+	
 	// timeTable 結構：
 	// timeTable (a JSONArray) [
 	// GeneralTimetable{GeneralTrainInfo{},StopTimes[],ServiceDay[]}]，這些是我們要的
