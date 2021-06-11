@@ -12,14 +12,13 @@ public class Test2 {
 
 	public Test2() {};
 
-	public static String getSeatno(String train, String start, String end) throws IOException {
+	public static String getSeatno(String train, String start, String end,int number) throws IOException {
 		String sss = "table";
 		BufferedReader rDB = new BufferedReader(new FileReader("C://NTU/" + sss + ".csv"));
 		// 找到指定train
 		// System.out.println("here");
 		String line = rDB.readLine();
-		int lineCount = 1;
-
+//		int lineCount++;
 		boolean found = false;
 		while (found == false) {
 
@@ -30,7 +29,7 @@ public class Test2 {
 			}
 
 			else {
-				lineCount++;
+//				lineCount++;
 			}
 		}
 		// 建一個array元素是各個站的string，預設空間十個車站
@@ -41,11 +40,14 @@ public class Test2 {
 		int s = 0, e = 0;
 		boolean matchS = false, matchE = false;
 		// 找到開始站，一路assign到找到為止
+		int sts=0,ste=0;
 		try {
+			
 			while (matchS == false) {
 				stationSeat[st] = rDB.readLine();
 				if (stationSeat[st].contains(start)) {
 					e++;
+					sts=st;
 					matchS = true;
 				} else {
 					s++;
@@ -56,6 +58,7 @@ public class Test2 {
 			while (matchE == false) {
 				stationSeat[st] = rDB.readLine();
 				if (stationSeat[st].contains(end)) {
+					ste=st;
 					matchE = true;
 				} else {
 					e++;
@@ -63,13 +66,13 @@ public class Test2 {
 				st++;
 			}
 		} catch (Exception ee) {
-			System.out.println(ee.getMessage());
+			//System.out.println(ee.getMessage());
 		}
-		if (s > e) {
+		if ((sts >= ste)) {
 			rDB.close();
 			return "wrong direction"; // 方向錯誤
-
 		}
+
 		// 把第一排設定成座位
 		String[] num = stationSeat[0].split(",");
 		// 把有的位置輸進一個二維的座位array
@@ -80,25 +83,34 @@ public class Test2 {
 
 		// 直的是相同座位，橫的是相同站
 		// 先以一個位子為單位(大圈for)，直的向下加之後(內圈for)，再進入下一次的迴圈
-		String seatno = "not found";
-		for (int i = 1; i <= 985; i++) {
+		int col=0;
+		String seatno = "";
+		String currentSeat="no seat available";
+		for(int t=1;t<=number;t++) {
+		for (int i = col; i <= 985; i++) {
 			int checkseat = 0;
+
 			for (int n = 0; n <= e - s; n++) {
+				
 				if (seats[n][i].equals("0")) {
 				} else {
 					checkseat++;
 				}
 			}
 			if (checkseat == 0) {
-				seatno = num[i]; // 要return的東西
+				currentSeat=num[i];
+				seatno = seatno+currentSeat+", "; // 要return的東西
+				col=i+1;
 				break;
 			}
+
+		}
 		}
 		rDB.close();
 		return seatno;
 	}
 
-	public static String getSeatnoSpecial(String train, String start, String end,String kind) throws IOException {
+	public static String getSeatnoSpecial(String train, String start, String end,int number,String kind) throws IOException {
 		String sss = "table";
 		BufferedReader rDB = new BufferedReader(new FileReader("C://NTU/" + sss + ".csv"));
 // 找到指定train
@@ -120,11 +132,14 @@ public class Test2 {
 		int s = 0, e = 0;
 		boolean matchS = false, matchE = false;
 		// 找到開始站，一路assign到找到為止
+		int sts=0,ste=0;
 		try {
+			
 			while (matchS == false) {
 				stationSeat[st] = rDB.readLine();
 				if (stationSeat[st].contains(start)) {
 					e++;
+					sts=st;
 					matchS = true;
 				} else {
 					s++;
@@ -135,6 +150,7 @@ public class Test2 {
 			while (matchE == false) {
 				stationSeat[st] = rDB.readLine();
 				if (stationSeat[st].contains(end)) {
+					ste=st;
 					matchE = true;
 				} else {
 					e++;
@@ -142,12 +158,11 @@ public class Test2 {
 				st++;
 			}
 		} catch (Exception ee) {
-			System.out.println(ee.getMessage());
+			//System.out.println(ee.getMessage());
 		}
-		if (s > e) {
+		if ((sts >= ste)) {
 			rDB.close();
 			return "wrong direction"; // 方向錯誤
-
 		}
 		// 把第一排設定成座位
 		String[] num = stationSeat[0].split(",");
@@ -159,8 +174,11 @@ public class Test2 {
 
 		// 直的是相同座位，橫的是相同站
 		// 先以一個位子為單位(大圈for)，直的向下加之後(內圈for)，再進入下一次的迴圈
-		String seatno = "not found";
-		for (int i = 1; i <= 985; i++) {
+		int col=0;
+		String seatno = "";
+		String currentSeat="no seats available";
+		for(int t=1;t<=number;t+=0) {		
+		for (int i = col; i <= 985; i++) {
 			int checkseat = 0;
 			for (int n = 0; n <= e - s; n++) {
 				if (seats[n][i].equals("0")) {
@@ -169,21 +187,32 @@ public class Test2 {
 				}
 			}
 			if (checkseat == 0) {
-				seatno = num[i]; // 要return的東西
-				if((seatno.contains("C")||seatno.contains("D"))&&(kind.equals("aisle"))) {
+				currentSeat=num[i];
+				if((currentSeat.contains("C")||currentSeat.contains("D"))&&(kind.equals("aisle"))) {
+					seatno =seatno+ currentSeat+", "; // 要return的東西
+					col=i+1;
+					t++;
 					break;
 				}
-				else if((seatno.contains("A")||seatno.contains("E"))&&(kind.equals("window"))) {
+				else if((currentSeat.contains("A")||currentSeat.contains("E"))&&(kind.equals("window"))) {
+					seatno =seatno+currentSeat+", "; // 要return的東西
+					col=i+1;
+					t++;
 					break;
 				}
 				else {
-					seatno ="no seats beside "+kind;
+					
 				}
 				
 				
 			}
 		}
+		}
 		rDB.close();
+		if(seatno.equals("")) {
+			seatno ="no seats beside "+kind;
+		}
+		
 		return seatno;
 	}
 	
@@ -287,10 +316,10 @@ public class Test2 {
 		}
 		bw.close();
 
-		String aaa = getSeatno("0300", "1060 : Tainan", "1000 : Taipei");
+		String aaa = getSeatno("0300","1060 : Tainan", "1000 : Taipei",3);
 		System.out.println(aaa);
 		
-		String spe = getSeatnoSpecial("0300", "1060 : Tainan", "1000 : Taipei","aisle");
+		String spe = getSeatnoSpecial("0300", "1060 : Tainan", "1000 : Taipei",3,"aisle");
 		System.out.println(spe);
 
 	}
