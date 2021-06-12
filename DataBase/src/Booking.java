@@ -78,7 +78,7 @@ public class Booking {
 			 * 當日車次之預訂僅受理至列車出發時間前1小時為止
 			 */
 			
-			//日期期限 (今日的30天之後)
+			//日期期限 (今日後的28天)
 			Calendar Limitdate = today;
 			Limitdate.add(Calendar.DAY_OF_MONTH, 28);
 			
