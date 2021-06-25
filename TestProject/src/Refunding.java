@@ -23,12 +23,12 @@ private int number,remainPeople;
 
 	public String Refund (String UID, String ticketCode , int people) throws IOException {
 		for (int i = 0; i < arrayofbooking.length(); i++) {
-			JSONObject date = arrayofbooking.getJSONObject(i);
-			String temporcode = date.getString("code");
+			JSONObject data = arrayofbooking.getJSONObject(i);
+			String temporcode = data.getString("code");
 			if (temporcode.contentEquals(ticketCode)) {
 				number = i;
 				code = temporcode;
-				JSONArray ticketInfo = date.getJSONArray("ticketInfo");
+				JSONArray ticketInfo = data.getJSONArray("ticketInfo");
 				start = ticketInfo.getJSONObject(0).getString("start");
 				trainNumber = ticketInfo.getJSONObject(0).getString("TrainNo");
 				Date = ticketInfo.getJSONObject(0).getString("date");
