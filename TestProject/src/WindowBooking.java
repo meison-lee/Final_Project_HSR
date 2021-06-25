@@ -27,6 +27,7 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import javax.swing.JProgressBar;
 
 public class WindowBooking {
 
@@ -98,9 +99,10 @@ public class WindowBooking {
 		framebooking.getContentPane().setLayout(null);
 		framebooking.setVisible(true);
 		
-		JLabel lblNewLabel = new JLabel("\u4E00\u822C\u8A02\u7968");
-		lblNewLabel.setFont(new Font("新細明體", Font.BOLD, 30));
-		lblNewLabel.setBounds(44, 10, 137, 36);
+		JLabel lblNewLabel = new JLabel("HSR \u4E00\u822C\u8A02\u7968\u7CFB\u7D71");
+		lblNewLabel.setForeground(new Color(25, 25, 112));
+		lblNewLabel.setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
+		lblNewLabel.setBounds(44, 10, 288, 36);
 		framebooking.getContentPane().add(lblNewLabel);
 		
 		JPanel panel = new JPanel();
@@ -428,52 +430,41 @@ public class WindowBooking {
 			comboBox_7.addItem(i);
 		}
 		
-		JPanel panel_1_5 = new JPanel();
-		panel_1_5.setBounds(271, 429, 580, 36);
-		framebooking.getContentPane().add(panel_1_5);
-		panel_1_5.setLayout(null);
-		
 		JLabel lblNewLabel_1 = new JLabel("\u8D77\u8A16\u7AD9");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1.setBounds(44, 74, 223, 36);
 		framebooking.getContentPane().add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("\u8ECA\u5EC2\u7A2E\u985E");
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_1.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1_1.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1_1.setBounds(44, 120, 223, 36);
 		framebooking.getContentPane().add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_2 = new JLabel("\u5EA7\u4F4D\u559C\u597D");
 		lblNewLabel_1_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_2.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1_2.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1_2.setBounds(44, 166, 223, 36);
 		framebooking.getContentPane().add(lblNewLabel_1_2);
 		
 		JLabel lblNewLabel_1_3 = new JLabel("\u8A02\u4F4D\u65B9\u5F0F");
 		lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_3.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1_3.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1_3.setBounds(44, 212, 223, 36);
 		framebooking.getContentPane().add(lblNewLabel_1_3);
 		
 		JLabel lblNewLabel_1_4 = new JLabel("\u6642\u9593");
 		lblNewLabel_1_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_4.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1_4.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1_4.setBounds(44, 258, 223, 72);
 		framebooking.getContentPane().add(lblNewLabel_1_4);
 		
 		JLabel lblNewLabel_1_5 = new JLabel("\u7968\u6578");
 		lblNewLabel_1_5.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_5.setFont(new Font("新細明體", Font.PLAIN, 20));
+		lblNewLabel_1_5.setFont(new Font("標楷體", Font.PLAIN, 20));
 		lblNewLabel_1_5.setBounds(44, 340, 223, 79);
 		framebooking.getContentPane().add(lblNewLabel_1_5);
-		
-		JLabel lblNewLabel_1_6 = new JLabel("\u67E5\u8A62\u65E9\u9CE5\u512A\u60E0");
-		lblNewLabel_1_6.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_6.setFont(new Font("新細明體", Font.PLAIN, 20));
-		lblNewLabel_1_6.setBounds(44, 429, 223, 36);
-		framebooking.getContentPane().add(lblNewLabel_1_6);
 		
 		panel5 = new JPanel();
 		panel5.setLayout(null);
@@ -532,6 +523,7 @@ public class WindowBooking {
 		textField_3.setColumns(10);
 		
 		JButton btnNewButton = new JButton("\u958B\u59CB\u67E5\u8A62");
+		btnNewButton.setBackground(new Color(230,230,230));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -580,10 +572,23 @@ public class WindowBooking {
 				
 			}
 		});
-		btnNewButton.setForeground(Color.RED);
-		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 30));
-		btnNewButton.setBounds(690, 500, 161, 58);
+		btnNewButton.setForeground(Color.DARK_GRAY);
+		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 20));
+		btnNewButton.setBounds(714, 452, 137, 44);
 		framebooking.getContentPane().add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("\u53D6\u6D88");
+		btnNewButton_1.setBackground(new Color(230,230,230));
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				framebooking.setVisible(false);
+			}
+		});
+		btnNewButton_1.setForeground(Color.DARK_GRAY);
+		btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 20));
+		btnNewButton_1.setBounds(44, 452, 137, 44);
+		framebooking.getContentPane().add(btnNewButton_1);
 		panel5.setVisible(false);
 		
 		
