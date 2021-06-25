@@ -99,6 +99,7 @@ public class WindowBooking {
 		framebooking.getContentPane().setLayout(null);
 		framebooking.setVisible(true);
 		
+		
 		JLabel lblNewLabel = new JLabel("HSR \u4E00\u822C\u8A02\u7968\u7CFB\u7D71");
 		lblNewLabel.setForeground(new Color(25, 25, 112));
 		lblNewLabel.setFont(new Font("º–∑¢≈È", Font.BOLD | Font.ITALIC, 30));
