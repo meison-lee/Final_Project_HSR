@@ -84,6 +84,7 @@ public class stationtrainNo {
 		for (int i =0; i < 5; i++) {
 			ticketArray[i] = array[i];
 		}
+		initialize();
 	}
 	public void inputTime(String Date , String Time ,String Start , String End , String type , String[] array) {
 		this.Date = Date;
@@ -148,7 +149,7 @@ public class stationtrainNo {
 		
 		textField4 = new JTextField();
 		textField4.setColumns(10);
-		textField4.setBounds(143, 497, 558, 21);
+		textField4.setBounds(149, 497, 552, 21);
 		frame.getContentPane().add(textField4);
 		
 		scrollPane = new JScrollPane();
@@ -185,7 +186,7 @@ public class stationtrainNo {
         textField_2.setColumns(10);
         
         btnNewButton = new JButton("Select");
-        btnNewButton.setBackground(Color.white);
+        btnNewButton.setBackground(new Color(230,230,230));
         btnNewButton.setOpaque(true);
         btnNewButton.addMouseListener(new MouseAdapter() {
         	@Override
@@ -225,7 +226,7 @@ public class stationtrainNo {
         		textField3.setText("車廂 : "+Type);
         	}
         });
-        btnNewButton.setFont(new Font("新細明體", Font.BOLD, 20));
+        btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 20));
         btnNewButton.setBounds(585, 264, 104, 32);
         frame.getContentPane().add(btnNewButton);
         
@@ -238,19 +239,19 @@ public class stationtrainNo {
         lblNewLabel.setText("去程 :"+Start+"-"+End+" "+Date);
         
         JButton btnNewButton2 = new JButton("\u78BA\u8A8D\u8ECA\u6B21");
-        btnNewButton2.setForeground(Color.DARK_GRAY);
-        btnNewButton2.setBackground(Color.orange);
+        btnNewButton2.setBackground(new Color(230,230,230));
         btnNewButton2.setOpaque(true);
-        btnNewButton2.setFont(new Font("新細明體", Font.BOLD, 20));
+        btnNewButton2.setFont(new Font("新細明體", Font.PLAIN, 20));
         btnNewButton2.setBounds(569, 553, 132, 39);
         frame.getContentPane().add(btnNewButton2);
         
         textField3 = new JTextField();
-        textField3.setBounds(58, 497, 86, 21);
+        textField3.setBounds(58, 497, 93, 21);
         frame.getContentPane().add(textField3);
         textField3.setColumns(10);
         
         btnNewButton2_1 = new JButton("\u91CD\u65B0\u67E5\u8A62");
+        btnNewButton2_1.setBackground(new Color(230,230,230));
         btnNewButton2_1.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -259,7 +260,7 @@ public class stationtrainNo {
         });
         btnNewButton2_1.setOpaque(true);
         btnNewButton2_1.setForeground(Color.DARK_GRAY);
-        btnNewButton2_1.setFont(new Font("新細明體", Font.BOLD, 20));
+        btnNewButton2_1.setFont(new Font("新細明體", Font.PLAIN, 20));
         btnNewButton2_1.setBounds(58, 553, 132, 39);
         frame.getContentPane().add(btnNewButton2_1);
         
