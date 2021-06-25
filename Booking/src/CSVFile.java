@@ -172,10 +172,6 @@ public class CSVFile {
 
 				JSONObject StopStations = StopTimes.getJSONObject(j);
 				String ID = StopStations.getString("StationID");
-				JSONObject StationName = StopStations.getJSONObject("StationName");
-
-				String name = StationName.getString("En");
-				name = ID + " : " + name; // 把各個站的ID跟名字結合
 
 				// System.out.println(name);
 				bw.write(ID + ",");

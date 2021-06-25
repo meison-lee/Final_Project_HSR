@@ -207,6 +207,10 @@ public class Booking {
 		 
 		//去程 //確認是否於五日前 
 		
+
+		System.out.println(Davailable.length());
+		System.out.println(Ravailable.length());
+		
 		if ((totalT == 1) && (AorW != 0)) {
 			
 			String kind = "";
@@ -263,12 +267,13 @@ public class Booking {
 			}
 		}
 		
+
+		
 		else {
-			ArrayList<Object> ttmp = new ArrayList<Object> ();
 			
 			for (int i = 0; i< Dlength; i++) {
 				String trainno = TrainNoofAv(Davailable, i);
-				String tmp = searchDB.getSeatno(DMonDay, trainno, SStation, DStation, totalT);
+				String tmp     = searchDB.getSeatno(DMonDay, trainno, SStation, DStation, totalT);
 				
 				if (tmp.equals("")) {
 					Davailable.remove(i);
@@ -280,6 +285,7 @@ public class Booking {
 						DEDarray.add(searchDB.checkEarly(DMonDay, trainno, normalT + studentT));
 					}
 					else {
+						ArrayList<Object> ttmp = new ArrayList<Object> ();
 						DEDarray.add(ttmp);
 					}
 				}
@@ -288,24 +294,31 @@ public class Booking {
 			for (int j = 0; j< Rlength; j++) {
 				
 				String trainno = TrainNoofAv(Ravailable, j);
-				String tmp = searchDB.getSeatno(RMonDay, trainno, DStation, SStation, totalT);
+				String tmp     = searchDB.getSeatno(RMonDay, trainno, DStation, SStation, totalT);
 				
 				if (tmp.equals("")) {
+					System.out.println("why remoove?");
 					Ravailable.remove(j);
 					Rlength--;
 				}
 				else {
 					Rseatno.add(tmp);
 					if (Limitdate.before(ReCal)) {
+						System.out.println(searchDB.checkEarly(RMonDay, trainno, normalT + studentT).get(0));
+						
 						REDarray.add(searchDB.checkEarly(RMonDay, trainno, normalT + studentT));
 					}
 					else {
+						ArrayList<Object> ttmp = new ArrayList<Object> ();
 						REDarray.add(ttmp);
 					}
 				}
 			}
 		}
 
+
+		System.out.println(DEDarray.size());
+		System.out.println(REDarray.size());
 		//學生票處理
 		
 		
@@ -508,7 +521,7 @@ public class Booking {
 
 		System.out.println(Rtrain);
 		
-		for (int k = 0; k< Rseats.length; k++) {
+		for (int k = 0; k < Rseats.length; k++) {
 			searchDB.setSeatno(RMonDay, Rtrain, DStation, SStation, Rseats[k]);
 			
 			System.out.print(Rseats[k] + ",");
