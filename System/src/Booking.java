@@ -116,7 +116,9 @@ public class Booking {
 		
 		//日期期限 (今日後的28天)
 		Calendar Limitdate = today;
+		System.out.println(sdf.format(Limitdate.getTime()));
 		Limitdate.add(Calendar.DAY_OF_MONTH, 28);
+		System.out.println(sdf.format(Limitdate.getTime()));
 
 		//確認當日時間是否可供訂票
 		if(Limitdate.before(DeCal)) {
@@ -190,12 +192,17 @@ public class Booking {
 		Rseatno = new ArrayList<String>();
 		
 		//把Llimitdate改為今日後五天(28-23) 
+		System.out.println("limitdate :" + sdf.format(Limitdate.getTime()));
 		
 		Limitdate.add(Calendar.DAY_OF_MONTH, -23);
+		
+		System.out.println("limitdate :" + sdf.format(Limitdate.getTime()));
+
+		System.out.println();
 		 
 		//去程 //確認是否於五日前 
 		
-		if ((totalT == 1) && (AorW != 0)) {
+		if (totalT == 1) {
 			
 			String kind = null;
 			
@@ -266,6 +273,7 @@ public class Booking {
 				else {
 					Dseatno.add(tmp);
 					if (Limitdate.before(DeCal)) {
+						System.out.println("in?");
 						DEDarray.add(searchDB.checkEarly(DMonDay, trainno, normalT + studentT));
 					}
 					else {

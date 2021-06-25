@@ -174,12 +174,9 @@ public class searchDB {
 			currentSeat = seatnos[i];
 			
 			T: for(int j = 0; j < way; j++) {
-				System.out.println(seatnos[i]);
 				if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
 						((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
-					
-				}else {
-					break T;
+					break;
 				}
 		
 				if (seats.get(j).get(i).equals("1") ) {

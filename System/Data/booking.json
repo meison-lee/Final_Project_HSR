@@ -1,0 +1,54 @@
+[
+    {
+        "code": "123456789",
+        "uid": "A123456789",
+        "ticketInfo":[
+            {
+            	"TrainNo" : "0639",
+                "date" : "2021-06-07",
+                "ticketsType" : "standard",
+                "ticketsCount" : 2,
+                "start" : "0990",
+                "end" : "1070",
+                "seats": ["0413A","0423B"]
+            },
+            {
+            	"TrainNo" : "0639",
+                "date" : "2021-06-07",
+                "ticketsType" : "standard",
+                "ticketsCount" : 2,
+                "start" : "1070",
+                "end" : "0990",
+                "seats": ["0413A","0423B"]
+            }
+        ],
+        "payDeadline" : "2021-05-25",
+        "payment" : 550
+    },
+    {
+        "code": "123455679",
+        "uid": "C123456789",
+        "ticketInfo":[
+            {
+            	"TrainNo" : "0000",
+                "date" : "2021-06-01",
+                "ticketsType" : "business",
+                "ticketsCount" : 1,
+                "start" : "1070",
+                "end" : "0990",
+                "seats": ["0611C"]
+            },
+            {
+            	"TrainNo" : "0000",
+                "date" : "2021-06-01",
+                "ticketsType" : "business",
+                "ticketsCount" : 1,
+                "start" : "0990",
+                "end" : "1070",
+                "seats": ["0617A"]
+            }
+        ],
+        "payDeadline" : "2021-05-25",
+        "payment" : 800
+    }
+]
