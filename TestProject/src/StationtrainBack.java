@@ -107,25 +107,25 @@ public class StationtrainBack {
 		};
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
-		frame.setBounds(100, 100, 724, 906);
+		frame.setBounds(100, 100, 724, 776);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		lblNewLabel = new JLabel("\u55E8");
 		lblNewLabel.setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
-		lblNewLabel.setBounds(35, 37, 525, 50);
+		lblNewLabel.setBounds(35, 12, 525, 50);
 		frame.getContentPane().add(lblNewLabel);
 		lblNewLabel.setText("去程 :"+Start+"-"+End+" "+Date);
 		
 		lblNewLabel1 = new JLabel("\u55E8");
 		lblNewLabel1.setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
-		lblNewLabel1.setBounds(35, 289, 525, 50);
+		lblNewLabel1.setBounds(35, 264, 525, 50);
 		frame.getContentPane().add(lblNewLabel1);
 		lblNewLabel1.setText("回程 :"+End+"-"+Start+" "+BDate);
 	    
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(75, 99, 485, 178);
+		scrollPane.setBounds(75, 74, 485, 178);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -150,7 +150,7 @@ public class StationtrainBack {
 		
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(75, 351, 485, 178);
+		scrollPane_1.setBounds(75, 326, 485, 178);
 		frame.getContentPane().add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -183,11 +183,11 @@ public class StationtrainBack {
         
         lblNewLabel1_1 = new JLabel("\u8A02\u7968\u660E\u7D30");
         lblNewLabel1_1.setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
-        lblNewLabel1_1.setBounds(35, 586, 525, 50);
+        lblNewLabel1_1.setBounds(35, 516, 471, 50);
         frame.getContentPane().add(lblNewLabel1_1);
         
         scrollPane_2 = new JScrollPane();
-        scrollPane_2.setBounds(75, 648, 572, 55);
+        scrollPane_2.setBounds(75, 578, 572, 55);
         frame.getContentPane().add(scrollPane_2);
         
         table_2 = new JTable();
@@ -199,6 +199,7 @@ public class StationtrainBack {
         table_2.setModel(dm3);
         
         JButton btnNewButton = new JButton("Selected");
+        btnNewButton.setBackground(new Color(230,230,230));
         btnNewButton.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -228,37 +229,37 @@ public class StationtrainBack {
         		textField_1.setText("票數 : "+var);
         	}
         });
-        btnNewButton.setFont(new Font("新細明體", Font.BOLD, 20));
-        btnNewButton.setBounds(544, 541, 103, 33);
+        btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 20));
+        btnNewButton.setBounds(544, 516, 103, 33);
         frame.getContentPane().add(btnNewButton);
         
         textField = new JTextField();
-        textField.setBounds(75, 702, 116, 24);
+        textField.setBounds(75, 632, 116, 24);
         frame.getContentPane().add(textField);
         textField.setColumns(10);
         
         textField_1 = new JTextField();
-        textField_1.setBounds(190, 702, 457, 24);
+        textField_1.setBounds(190, 632, 457, 24);
         frame.getContentPane().add(textField_1);
         textField_1.setColumns(10);
         
         btnNewButton_1 = new JButton("\u78BA\u8A8D\u8ECA\u6B21");
-        btnNewButton_1.setForeground(Color.DARK_GRAY);
-        btnNewButton_1.setFont(new Font("新細明體", Font.BOLD, 20));
-        btnNewButton_1.setBounds(514, 754, 132, 39);
+        btnNewButton_1.setForeground(new Color(0, 0, 0));
+        btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 20));
+        btnNewButton_1.setBounds(515, 682, 132, 39);
         frame.getContentPane().add(btnNewButton_1);
-        btnNewButton_1.setBackground(Color.orange);
         btnNewButton_1.setOpaque(true);
         
         btnNewButton_2 = new JButton("\u91CD\u65B0\u67E5\u8A62");
+        btnNewButton_2.setBackground(new Color(230,230,230));
         btnNewButton_2.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		frame.setVisible(false);
         	}
         });
-        btnNewButton_2.setFont(new Font("新細明體", Font.BOLD, 20));
-        btnNewButton_2.setBounds(75, 754, 132, 39);
+        btnNewButton_2.setFont(new Font("新細明體", Font.PLAIN, 20));
+        btnNewButton_2.setBounds(76, 682, 132, 39);
         frame.getContentPane().add(btnNewButton_2);
         
         
