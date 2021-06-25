@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.StringJoiner;
 
 /**
@@ -240,68 +239,47 @@ public class searchDB {
 	 * @param date
 	 * @param train
 	 * @param (String)discount
-	 * @return 回傳ArrayList 格式為:{} (也就是沒票) 或 {折扣, 可買} 或 {折扣, 可買票, 折扣, 可買票}
+	 * @return"there is still early-tickets"或是"there is no early-tickets"
 	 * @throws IOException
 	 */
-	public static ArrayList<Object> checkEarly(String date,String train, int number) throws IOException {
-		
+	public static String checkEarly(String date,String train,String discount) throws IOException {
 		BufferedReader rDB = new BufferedReader(new FileReader("./" + date + ".csv"));
-		String line = rDB.readLine();
-		boolean found = false;
+		// 找到指定train
+				String line = rDB.readLine();
+				boolean found = false;
+				while (found == false) {
+					line = rDB.readLine();
+					String[] tt = line.split(",");
+					if (tt[0].equals(train)) {
+						found = true;
+					}
+					else {}
+				}
+				
+				
+				//找到並扣掉折價的票
+				int tick=0;
+				String[] caldiscount = new String[2];
+				caldiscount[0] = rDB.readLine();
+				caldiscount[1] = rDB.readLine();
+				String[] dis = caldiscount[0].split(",");
+				String[] tickets = caldiscount[1].split(",");		
+				for(int t=1;t<=10;t++) {
+					if (dis[t].contains(discount)) {
+						tick = Integer.parseInt(tickets[t]);
+
+						break;
+					}
+				}
+				rDB.close();
 		
-		//這個while要做啥
-		while (found == false) {
-			line = rDB.readLine();
-			String[] tt = line.split(",");
-			if (tt[0].equals(train)) {
-				found = true;
-			}
-			else {}
-		}
-		
-		//該列次的折價與剩餘票數
-		String[] caldiscount = new String[2];
-		caldiscount[0]   = rDB.readLine();
-		caldiscount[1]   = rDB.readLine();
-		String[] dis 	 = caldiscount[0].split(",");
-		String[] tickets = caldiscount[1].split(",");
-		
-		//回傳ArrayList 第零個放是否有票 接下來 一個折多少 一個能拿幾張
-		ArrayList<Object> A = new ArrayList<Object>();
-		
-		int num = number;
-		
-		for(int t = 0 ;t < dis.length ;t++ ) {
-			int remain = Integer.parseInt(tickets[t]);
-			
-			if (remain == 0) {
-			}
-			else if(remain < number && remain > 0) {
-				if (t == dis.length -1) {
-					A.add(dis[t]);
-					A.add(remain);
-					break;
+				if (tick>0) {
+					return "there is still early-tickets";
 				}
 				else {
-					A.add(dis[t]);
-					A.add(remain);
-					num = num - remain;
+					return "there is no early-tickets";
 				}
-			}
-			else {
-				A.add(dis[t]);
-				A.add(num);
-				break;
-			}
-		}
-		
-		rDB.close();
-		
-		if (A.size() == 0) {
-			A.add("");
-		}
-		
-		return A;
+
 	}
 	
 	/**
@@ -441,7 +419,7 @@ public class searchDB {
 	 * @param discount
 	 * @throws IOException
 	 * 
-	 * 先見一個中介檔案把資料輸進去，輸完之後再生一個與原本檔案一樣的名字，把中繼檔案輸入
+	 * 先見一個中介檔案把資料輸進去，書完之後再生一個與原本檔案一樣的名字，把中繼檔案輸入
 	 * 再把中繼檔案刪除
 	 */
 	public static void setSeatnoEarly(String date,String train, String start, String end,String seatNO,String discount) throws IOException {
@@ -466,7 +444,8 @@ public class searchDB {
 			else {
 			}
 		}		
-		
+
+
 		//找到並扣掉折價的票
 		String[] caldiscount = new String[2];
 		caldiscount[0] = rDB.readLine();
@@ -474,8 +453,7 @@ public class searchDB {
 		sDB.write(caldiscount[0]);
 		caldiscount[1] = rDB.readLine();
 		String[] dis = caldiscount[0].split(",");
-		String[] tickets = caldiscount[1].split(",");
-		
+		String[] tickets = caldiscount[1].split(",");		
 		for(int t=1;t<=10;t++) {
 			if (dis[t].contains(discount)) {
 				int tick = Integer.parseInt(tickets[t])-1;

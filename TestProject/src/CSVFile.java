@@ -50,7 +50,7 @@ public class CSVFile {
 		int Weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
 
 		// 判斷這天之前是否已創過
-		if (!(new File("/Data/" + writeMonth(cal) + wrtieDate(cal) + ".csv").exists())) {
+		if (!(new File("Data/" + writeMonth(cal) + wrtieDate(cal) + ".csv").exists())) {
 			writeFile(Weekday, writeMonth(cal), wrtieDate(cal)); // 寫入該天的車次檔
 			writeRecentFile(writeMonth(cal) + wrtieDate(cal));
 		}
@@ -74,7 +74,7 @@ public class CSVFile {
 	public void writeFile(int whichWeekdays, String month, String date) throws Exception {
 
 		// 建立的檔名為日期(ex:0613)
-		BufferedWriter bw = new BufferedWriter(new FileWriter("/Data/" + month + date + ".csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("Data/" + month + date + ".csv"));
 
 		// 找出當天所有有開的車次
 		int[] days = FindTrain(whichWeekdays);
@@ -111,7 +111,7 @@ public class CSVFile {
 
 			// -----------------------處理earlyDiscount--------------------------------
 			JSONObject EDTrain = null;
-			String earlyDiscountTrainNo = null;
+			String earlyDiscountTrainNo = "";
 
 			for (int k = 0; k < DiscountTrains.length(); k++) {
 
@@ -178,7 +178,7 @@ public class CSVFile {
 				name = ID + " : " + name; // 把各個站的ID跟名字結合
 
 				// System.out.println(name);
-				bw.write(name + ",");
+				bw.write(ID + ",");
 
 				seat0("/seat.json", bw);
 				bw.write("\n");
@@ -195,21 +195,21 @@ public class CSVFile {
 	// -----------------------recentDateFile的寫入方法--------------------------------
 	public void writeRecentFile(String createdDate) throws IOException {
 
-		if ((new File("/Data/recentDateFile.csv").exists())) {
-			BufferedReader br = new BufferedReader(new FileReader("/Data/recentDateFile.csv"));
+		if ((new File("Data/recentDateFile.csv").exists())) {
+			BufferedReader br = new BufferedReader(new FileReader("Data/recentDateFile.csv"));
 			String Line = br.readLine(); // 讀舊的出來
 			br.close();
 			String[] OLD = Line.split(",");
 			ArrayList<String> DateList = new ArrayList<String>(Arrays.asList(OLD));
 			DateList.add(createdDate); // 加上這次建的
 			String[] NEW = DateList.toArray(new String[0]);
-			BufferedWriter bw1 = new BufferedWriter(new FileWriter("/Data/recentDateFile.csv"));
+			BufferedWriter bw1 = new BufferedWriter(new FileWriter("Data/recentDateFile.csv"));
 			for (int i = 0; i < NEW.length; i++) {
 				bw1.write(NEW[i] + ","); // 重寫新的recentDateFile
 			}
 			bw1.close();
 		} else {
-			BufferedWriter bw1 = new BufferedWriter(new FileWriter("/Data/recentDateFile.csv"));
+			BufferedWriter bw1 = new BufferedWriter(new FileWriter("Data/recentDateFile.csv"));
 			bw1.write(createdDate);
 			bw1.close();
 		}
@@ -221,7 +221,7 @@ public class CSVFile {
 		
 		Calendar cal = Calendar.getInstance(); // 取得當天日期
 		String CAL = String.format("%02d", cal.get(Calendar.MONTH) + 1) + String.format("%02d", cal.get(Calendar.DATE)); // 當天月分+日期
-		BufferedReader br = new BufferedReader(new FileReader("/Data/recentDateFile.csv"));
+		BufferedReader br = new BufferedReader(new FileReader("Data/recentDateFile.csv"));
 		String Line = br.readLine(); // 取得之前所有建過的日期
 		br.close();
 		String[] OLD = Line.split(",");
@@ -230,13 +230,13 @@ public class CSVFile {
 		int j = 0; // 從0開始檢查,沒刪掉的話就往前檢查
 		for (int i = 0; i < DateList.size(); i++) {
 			if (Integer.valueOf(DateList.get(j)) < Integer.valueOf(CAL)) { // 建過的日期 < 當天則刪掉
-				new File("/Data/" + DateList.get(j) + ".csv").delete();
+				new File("Data/" + DateList.get(j) + ".csv").delete();
 				DateList.remove(j);
 			} else
 				j++;
 		}
 		String[] NEW = DateList.toArray(new String[0]);
-		BufferedWriter bw2 = new BufferedWriter(new FileWriter("/Data/recentDateFile.csv"));
+		BufferedWriter bw2 = new BufferedWriter(new FileWriter("Data/recentDateFile.csv"));
 		for (int i = 0; i < NEW.length; i++) {
 			bw2.write(NEW[i]); // 覆寫新的recentDateFile
 		}
