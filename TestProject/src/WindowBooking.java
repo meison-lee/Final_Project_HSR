@@ -40,6 +40,7 @@ public class WindowBooking {
 	private JComboBox comboBox;
 	private JComboBox comboBox_1;
 	private JComboBox comboBox_2;
+	private JComboBox comboBox_2_1;
 	private JComboBox comboBox_3;
 	private JComboBox comboBox_4;
 	private JComboBox comboBox_5;
@@ -351,13 +352,6 @@ public class WindowBooking {
 		textField_1.setBounds(92, 5, 61, 26);
 		panel3.add(textField_1);
 		
-		Canvas canvas = new Canvas();
-		canvas.setBounds(489, -299, 160, 60);
-		panel_1_3.add(canvas);
-		canvas.setForeground(Color.DARK_GRAY);
-		canvas.setFont(null);
-		canvas.setBackground(Color.DARK_GRAY);
-		
 		JPanel panel_1_4 = new JPanel();
 		panel_1_4.setBounds(271, 340, 580, 79);
 		framebooking.getContentPane().add(panel_1_4);
@@ -506,7 +500,7 @@ public class WindowBooking {
 		lblNewLabel_3_3.setBounds(10, 0, 18, 36);
 		panel2_1.add(lblNewLabel_3_3);
 		
-		JComboBox comboBox_2_1 = new JComboBox();
+		comboBox_2_1 = new JComboBox();
 		comboBox_2_1.setEditable(true);
 		comboBox_2_1.setBounds(38, 7, 80, 25);
 		panel2_1.add(comboBox_2_1);
@@ -554,9 +548,35 @@ public class WindowBooking {
 				else {
 					type = radio2.getText();
 				}
-				stationtrainNo s = new  stationtrainNo
-				(textField.getText(), comboBox_2.getSelectedItem().toString() ,comboBox.getSelectedItem().toString() , 
-				comboBox_1.getSelectedItem().toString(),type,ticketArray);
+				if (radio6.isSelected()) {
+					if (CheckBox.isSelected()) {
+						
+						StationtrainBack b = new StationtrainBack();				
+						b.BackTime(textField.getText(), comboBox_2.getSelectedItem().toString() ,comboBox.getSelectedItem().toString() , 
+								comboBox_1.getSelectedItem().toString(),type,ticketArray,
+								textField_2.getText(), comboBox_2_1.getSelectedItem().toString());
+					}//依時間 又要回程
+					else {
+						stationtrainNo s = new  stationtrainNo();
+						s.inputTime
+								(textField.getText(), comboBox_2.getSelectedItem().toString() ,comboBox.getSelectedItem().toString() , 
+								comboBox_1.getSelectedItem().toString(),type,ticketArray);
+					}//依時間 單程
+				}
+				else {
+					if (CheckBox.isSelected()) {
+						StationtrainBack b = new StationtrainBack();
+						b.BackTrain(textField.getText(), comboBox_2.getSelectedItem().toString() ,comboBox.getSelectedItem().toString() , 
+								comboBox_1.getSelectedItem().toString(),type,ticketArray,
+								textField_2.getText(), textField_3.getText());
+					}//依車次 又要回程
+					else {
+						stationtrainNo s = new  stationtrainNo();
+						s.inputTrainNo(textField.getText(), textField_1.getText() ,comboBox.getSelectedItem().toString() , 
+								comboBox_1.getSelectedItem().toString(),type,ticketArray);
+					}//依車次 單程
+					
+				}
 				
 			}
 		});
