@@ -41,10 +41,11 @@ public class stationtrainNo {
 	private String selected = "";
 	private JButton btnNewButton;
 	private int num;
-	private String Date,Start,End,Time,Type;
+	private String Date,Start,End,Time,Type,TrainNo;
 	private String [] ticketArray = new String [5];
 	private JTextField textField3;
 	private JTextField textField4;
+	private JButton btnNewButton2_1;
 	
 
 	/**
@@ -68,13 +69,23 @@ public class stationtrainNo {
 	 * Create the application.
 	 * @wbp.parser.entryPoint
 	 */
-//	public stationtrainNo() {
-//		initialize();
-//	}
+	public stationtrainNo() {
+		//initialize();
+	}
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public stationtrainNo(String Date , String Time ,String Start , String End , String type , String[] array) {
+	public void inputTrainNo(String Date , String TrainNo ,String Start , String End , String type , String[] array) {
+		this.Date = Date;
+		this.End = End;
+		this.Start = Start;
+		this.TrainNo = TrainNo;
+		this.Type = type;
+		for (int i =0; i < 5; i++) {
+			ticketArray[i] = array[i];
+		}
+	}
+	public void inputTime(String Date , String Time ,String Start , String End , String type , String[] array) {
 		this.Date = Date;
 		this.End = End;
 		this.Start = Start;
@@ -238,6 +249,19 @@ public class stationtrainNo {
         textField3.setBounds(58, 497, 86, 21);
         frame.getContentPane().add(textField3);
         textField3.setColumns(10);
+        
+        btnNewButton2_1 = new JButton("\u91CD\u65B0\u67E5\u8A62");
+        btnNewButton2_1.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		frame.setVisible(false);
+        	}
+        });
+        btnNewButton2_1.setOpaque(true);
+        btnNewButton2_1.setForeground(Color.DARK_GRAY);
+        btnNewButton2_1.setFont(new Font("·s²Ó©úÅé", Font.BOLD, 20));
+        btnNewButton2_1.setBounds(58, 553, 132, 39);
+        frame.getContentPane().add(btnNewButton2_1);
         
         dm.setDataVector(data, columns);
         table.addMouseListener(new MouseAdapter() {
