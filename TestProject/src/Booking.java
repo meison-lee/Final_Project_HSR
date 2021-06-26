@@ -72,8 +72,6 @@ public class Booking {
 	int concessionT = 0;
 	int studentT = 0;
 	
-	String TicketType = "standard";
-	
 	public String Search(String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
 			String SStation, String DStation, //S始站, D終站
 			int normalT, int concessionT, int studentT, //一般票, 優待票(5折), 大學生票
@@ -92,7 +90,7 @@ public class Booking {
 		this.totalT = normalT+concessionT+studentT;
 		
 		if ((totalT > 10) || ((Rdate != "")&&(totalT > 5))) {
-			return "失敗，因訂單預定過多車票(每筆最多10張，來回車票獨立計算)";
+			throw new BookingExceptions("注意：訂單預定過多車票(每筆最多10張，來回車票獨立計算)");
 		}
 		
 		//處理方向
@@ -175,10 +173,10 @@ public class Booking {
 		//確認當日時間是否可供訂票
 		if(Limitdate.before(DeCal)) {
 			if(Limitdate.before(ReCal)) {
-				return "去回程列車皆尚未開放訂票";
+				throw new BookingExceptions("注意：去回程列車日期皆尚未開放訂票");
 			}
 			else {
-				return "去程列車皆尚未開放訂票";
+				throw new BookingExceptions("注意：去程列車日期皆尚未開放訂票");
 			}
 		}
 		else {
@@ -252,6 +250,10 @@ public class Booking {
 		
 		//去程 //確認是否於五日前 
 		
+		if (AorW == 0 && totalT != 1) {
+			throw new BookingExceptions("注意：乘車人數超過一人時無法使用偏好座位功能。");
+		}
+		
 		if ((totalT == 1) && (AorW != 0)) {
 			
 			String kind = "";
@@ -267,8 +269,14 @@ public class Booking {
 				
 				
 				String trainno = TrainNoofAv(Davailable, i);
-				String tmp     = searchDB.getSeatnoSpecial(DMonDay, trainno, SStation, DStation, kind);
 				
+				String tmp = null;
+				
+				if (BorS) {
+					tmp = searchDB.getBSeatnoSpecial(DMonDay, trainno, SStation, DStation, kind);
+				}else {
+					tmp = searchDB.getSeatnoSpecial(DMonDay, trainno, SStation, DStation, kind);
+				}
 				
 				if (tmp.equals("")) {
 					Davailable.remove(i);
@@ -276,8 +284,14 @@ public class Booking {
 				}
 				else {
 					Dseatnos.add(tmp);
-					if (Limitdate.before(DeCal)) {
-						DEDarray.add(searchDB.checkEarly(DMonDay, trainno, 1));
+					if (BorS == false) {
+						if (Limitdate.before(DeCal)) {
+							DEDarray.add(searchDB.checkEarly(DMonDay, trainno, 1));
+						}
+						else {
+							ArrayList<Object> ttmp = new ArrayList<Object> ();
+							DEDarray.add(ttmp);
+						}
 					}
 					else {
 						ArrayList<Object> ttmp = new ArrayList<Object> ();
@@ -288,7 +302,12 @@ public class Booking {
 			
 			for (int j = 0; j< Rlength; j++) {
 				String trainno = TrainNoofAv(Ravailable, j);
-				String tmp     = searchDB.getSeatnoSpecial(RMonDay, trainno, DStation, SStation, kind);
+				String tmp = null;
+				if(BorS) {
+					tmp = searchDB.getBSeatnoSpecial(RMonDay, trainno, DStation, SStation, kind);
+				}else {
+					tmp = searchDB.getSeatnoSpecial(RMonDay, trainno, DStation, SStation, kind);
+				}
 				
 				if (tmp.equals("")) {
 					Ravailable.remove(j);
@@ -296,8 +315,14 @@ public class Booking {
 				}
 				else {
 					Rseatnos.add(tmp);
-					if (Limitdate.before(ReCal)) {
-						REDarray.add(searchDB.checkEarly(RMonDay, trainno, 1));
+					if (BorS == false) {
+						if (Limitdate.before(ReCal)) {
+							REDarray.add(searchDB.checkEarly(RMonDay, trainno, 1));
+						}
+						else {
+							ArrayList<Object> ttmp = new ArrayList<Object> ();
+							REDarray.add(ttmp);
+						}
 					}
 					else {
 						ArrayList<Object> ttmp = new ArrayList<Object> ();
@@ -312,7 +337,12 @@ public class Booking {
 			
 			for (int i = 0; i< Dlength; i++) {
 				String trainno = TrainNoofAv(Davailable, i);
-				String tmp = searchDB.getSeatno(DMonDay, trainno, SStation, DStation, totalT);
+				String tmp = null;
+				if(BorS) {
+					tmp = searchDB.getBSeatno(DMonDay, trainno, SStation, DStation, totalT);
+				}else {
+					tmp = searchDB.getSeatno(DMonDay, trainno, SStation, DStation, totalT);
+				}
 				
 				if (tmp.equals("")) {
 					Davailable.remove(i);
@@ -320,8 +350,13 @@ public class Booking {
 				}
 				else {
 					Dseatnos.add(tmp);
-					if (Limitdate.before(DeCal)) {
-						DEDarray.add(searchDB.checkEarly(DMonDay, trainno, normalT));
+					if(BorS == false) {
+						if (Limitdate.before(DeCal)) {
+							DEDarray.add(searchDB.checkEarly(DMonDay, trainno, normalT));
+						}
+						else {
+							DEDarray.add(ttmp);
+						}
 					}
 					else {
 						DEDarray.add(ttmp);
@@ -332,7 +367,12 @@ public class Booking {
 			for (int j = 0; j< Rlength; j++) {
 				
 				String trainno = TrainNoofAv(Ravailable, j);
-				String tmp = searchDB.getSeatno(RMonDay, trainno, DStation, SStation, totalT);
+				String tmp = null;
+				if(BorS) {
+					tmp = searchDB.getBSeatno(RMonDay, trainno, DStation, SStation, totalT);
+				}else {
+					tmp = searchDB.getSeatno(RMonDay, trainno, DStation, SStation, totalT);
+				}
 				
 				if (tmp.equals("")) {
 					Ravailable.remove(j);
@@ -340,8 +380,13 @@ public class Booking {
 				}
 				else {
 					Rseatnos.add(tmp);
-					if (Limitdate.before(ReCal)) {
-						REDarray.add(searchDB.checkEarly(RMonDay, trainno, normalT));
+					if(BorS == false) {
+						if (Limitdate.before(ReCal)) {
+							REDarray.add(searchDB.checkEarly(RMonDay, trainno, normalT));
+						}
+						else {
+							REDarray.add(ttmp);
+						}
 					}
 					else {
 						REDarray.add(ttmp);
@@ -492,7 +537,7 @@ public class Booking {
 				for (int j = 0; j < Ravailable.length(); j++) {
 					System.out.print(TrainNoofAv(Ravailable,j) + " |");
 
-					JSONArray timetable = Davailable.getJSONObject(j).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+					JSONArray timetable = Ravailable.getJSONObject(j).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
 					
 					System.out.print("| " + Departuretime(DStation,timetable) + " |");
 					System.out.print("| " + Arrivetime   (SStation,timetable) + " |");
@@ -538,23 +583,8 @@ public class Booking {
 		}
 	}
 	
-	//條件式訂票bookwithTrainNo(String )
 	
-	/**
-	 * @param trainno 欲搜尋車次號碼
-	 * @return 該車次號碼的JSONObejct(所有資訊)
-	 */
-	
-	private JSONObject getTrain(String trainno) {
-		for(int i = 0; i < jsonArray.length(); i++) {
-			if (jsonArray.getJSONObject(i).getJSONObject("GeneralTimetable").getJSONObject("GeneralTrainInfo").getString("TrainNo").equals(trainno)){
-				return jsonArray.getJSONObject(i);
-			}
-		}
-		return null;
-	}
-	
-	public String Book(String uid) throws IOException {
+	public String Book(String uid) throws IOException, BookingExceptions {
 		// size是零(沒有特價)就會直接忽略for迴圈
 		ArrayList<Object> Dtmparraylist =  DEDarray.get(Dint);
 		ArrayList<Object> Rtmparraylist =  REDarray.get(Rint);
@@ -607,15 +637,15 @@ public class Booking {
 		
 		//全票與早鳥票
 		if(DED.size() == 0) {
-			NormalP = NormalP + this.foundprice(SStation, DStation, "standard") * normalT;
+			NormalP = NormalP + this.foundprice(SStation, DStation, ticketType) * normalT;
 		}else if(DED.size() == 2) {
 			NormalP = NormalP + this.foundprice(SStation, DStation, (String.valueOf(DED.get(0))) ) * Integer.parseInt((String.valueOf(DED.get(1))) );
-			NormalP = NormalP + this.foundprice(SStation, DStation, "standard") * (normalT - (Integer) DED.get(1));
+			NormalP = NormalP + this.foundprice(SStation, DStation, ticketType) * (normalT - (Integer) DED.get(1));
 		}else if(DED.size() == 4) {
 			NormalP = this.foundprice(SStation, DStation, (String) DED.get(0)) * (Integer) DED.get(1);
 			NormalP = this.foundprice(SStation, DStation, (String) DED.get(2)) * (Integer) DED.get(3);
 		}else {
-			System.out.println("DED error occurs");
+			throw new BookingExceptions("執行訂票行為時發生去程列車產生錯誤");
 		}
 		
 		//學生票
@@ -644,15 +674,15 @@ public class Booking {
 			
 			//全票與早鳥票
 			if(DED.size() == 0) {
-				NormalP = NormalP + this.foundprice(DStation, SStation, "standard") * normalT;
+				NormalP = NormalP + this.foundprice(DStation, SStation, ticketType) * normalT;
 			}else if(DED.size() == 2) {
 				NormalP = NormalP + this.foundprice(DStation, SStation, (String) RED.get(0)) * (Integer) RED.get(1);
-				NormalP = NormalP + this.foundprice(DStation, SStation, "standard") * (normalT - (Integer) RED.get(1));
+				NormalP = NormalP + this.foundprice(DStation, SStation, ticketType) * (normalT - (Integer) RED.get(1));
 			}else if(DED.size() == 4) {
 				NormalP = this.foundprice(DStation, SStation, (String) RED.get(0)) * (Integer) RED.get(1);
 				NormalP = this.foundprice(DStation, SStation, (String) RED.get(2)) * (Integer) RED.get(3);
 			}else {
-				System.out.println("RED error occurs");
+				throw new BookingExceptions("執行訂票行為時發生回程列車產生錯誤");
 			}
 			
 			//學生票
@@ -673,8 +703,6 @@ public class Booking {
 		
 		String Ddrivetime = getdrivetime(Departuretime(SStation, Dtimetable), Departuretime(DStation, Dtimetable));
 		String Rdrivetime = getdrivetime(Departuretime(DStation, Rtimetable), Departuretime(SStation, Rtimetable));
-		
-		
 		
 		this.orderstore(uid, Ddate, Rdate, 
 						ticketType, totalT, SStation, DStation, Dseats, Rseats,
@@ -736,7 +764,11 @@ public class Booking {
 		
 		JSONObject codegenerator = booking.getJSONObject(0);
 		int seed = codegenerator.getInt("seed");
-		booking.getJSONObject(0).put("seed", seed++);
+		JSONObject Seed = booking.getJSONObject(0);
+		seed++;
+		Seed.remove("seed");
+		Seed.put("seed", seed);
+		booking.put(0,Seed);
 		
 		JSONObject order = new JSONObject();
 		JSONArray ticketInfo = new JSONArray();
@@ -750,10 +782,26 @@ public class Booking {
 		order.put("payment", payment);
 		//to.put("CarType", carType);
 		
+		ArrayList<String> DtTypes = new ArrayList<String>();
+		ArrayList<String> RtTypes = new ArrayList<String>();
+		
+		for(int d =0; d< normalT;d++) {
+			DtTypes.add("normal");
+		}
+		for(int d =0; d< concessionT;d++) {
+			DtTypes.add("concession");
+		}
+		for(int d =0; d< studentT;d++) {
+			DtTypes.add("student");
+		}
+		
+		String[] DticketTypes = DtTypes.toArray(new String[DtTypes.size()]);
+		
 		goway.put("DTrainNo", DTrainNo);
 		goway.put("date", DDate);
-		goway.put("ticketsType", ticketType);
+		goway.put("carType", ticketType);
 		goway.put("ticketsCount", number);
+		goway.put("ticketsTypes", DticketTypes);
 		goway.put("start", SStation);
 		goway.put("end", DStation);
 		goway.put("seats", Dseats);
@@ -764,15 +812,28 @@ public class Booking {
 		
 		ticketInfo.put(goway);
 		
-		if (RDate.equals(null) ) {
+		if (RDate.equals("") ) {
 			
 		}else {
+			for(int d =0; d< normalT;d++) {
+				RtTypes.add("normal");
+			}
+			for(int d =0; d< concessionT;d++) {
+				RtTypes.add("concession");
+			}
+			for(int d =0; d< studentT;d++) {
+				RtTypes.add("student");
+			}
+			
+			String[] RticketTypes = RtTypes.toArray(new String[RtTypes.size()]);
+			
 			backway = new JSONObject();
 			
 			backway.put("RTrainNo", RTrainNo);
 			backway.put("date", RDate);
-			backway.put("ticketsType", ticketType);
+			backway.put("carType", ticketType);
 			backway.put("ticketsCount", number);
+			backway.put("ticketsTypes", RticketTypes);
 			backway.put("start", DStation); //倒過來放
 			backway.put("end", SStation);   //
 			backway.put("seats", Rseats);
