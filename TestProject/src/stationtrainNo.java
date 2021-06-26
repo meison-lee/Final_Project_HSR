@@ -239,6 +239,14 @@ public class stationtrainNo {
         lblNewLabel.setText("去程 :"+Start+"-"+End+" "+Date);
         
         JButton btnNewButton2 = new JButton("\u78BA\u8A8D\u8ECA\u6B21");
+        btnNewButton2.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		////////////////////////////////////////////////////選擇了row幾 
+        		frame.setAlwaysOnTop(false);
+        		windowInputUID W = new windowInputUID();//輸入uid
+        	}
+        });
         btnNewButton2.setBackground(new Color(230,230,230));
         btnNewButton2.setOpaque(true);
         btnNewButton2.setFont(new Font("新細明體", Font.PLAIN, 20));
