@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 public class WindowSearching {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField txtA;
 	private JTextField textField_1;
 
 	/**
@@ -64,12 +64,14 @@ public class WindowSearching {
 		lblNewLabel_1_1.setBounds(49, 115, 152, 31);
 		frame.getContentPane().add(lblNewLabel_1_1);
 		
-		textField = new JTextField();
-		textField.setBounds(199, 76, 197, 24);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		txtA = new JTextField();
+		txtA.setText("A123456789");
+		txtA.setBounds(199, 76, 197, 24);
+		frame.getContentPane().add(txtA);
+		txtA.setColumns(10);
 		
 		textField_1 = new JTextField();
+		textField_1.setText("123456789");
 		textField_1.setColumns(10);
 		textField_1.setBounds(199, 115, 197, 24);
 		frame.getContentPane().add(textField_1);
@@ -78,7 +80,11 @@ public class WindowSearching {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//µ¥¬d¸ßªºmethod
+				SearchOrder s = new SearchOrder();
+				
+				WindowSearchResult w = new WindowSearchResult();
+				w.var(s.search(txtA.getText(), textField_1.getText()),txtA.getText(),textField_1.getText(),s.getTicketType(),s.getTicketCount(),s.getPrice());
+				
 			}
 		});
 		btnNewButton.setBackground(new Color(230,230,230));
