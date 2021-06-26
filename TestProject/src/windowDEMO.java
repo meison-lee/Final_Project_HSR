@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -18,10 +19,16 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.ImageIcon;
 
 public class windowDEMO {
 
 	private JFrame frame;
+	private JButton btnNewButton1;
+	private JButton btnNewButton2;
+	private JButton btnNewButton3;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Launch the application.
@@ -53,124 +60,64 @@ public class windowDEMO {
 		frame = new JFrame();
 		//frame.setAlwaysOnTop(true);
 		frame.getContentPane().setEnabled(false);
-		frame.setBounds(100, 100, 741, 386);
+		frame.setBounds(100, 100, 674, 336);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		//frame.setUndecorated(true);
+		//frame.getContentPane().setBackground(Color.lightGray);
 		
-		JComboBox comboBox1 = new JComboBox();
-		comboBox1.setEditable(true);
-		comboBox1.setFont(new Font("新細明體", Font.PLAIN, 20));
-		comboBox1.setBounds(227, 36, 125, 51);
-		frame.getContentPane().add(comboBox1);
-		comboBox1.addItem("訂票");
-		comboBox1.addItem("查詢");
-		comboBox1.addItem("退票");
-		comboBox1.setSelectedItem("請選擇");
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(62, 97, 308, 206);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JButton btnNewButton_1 = new JButton("OK");
-		btnNewButton_1.setBounds(453, 142, 75, 42);
-		frame.getContentPane().add(btnNewButton_1);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox1.getSelectedIndex() == 0) {
-					WindowBooking a = new WindowBooking();
-					
-				}
-				if (comboBox1.getSelectedIndex() == 1) {
-					
-				}
-				if (comboBox1.getSelectedIndex() == 2) {
-					Refunding refundClass = new Refunding();
-					
-					JFrame refund = new JFrame();
-					refund.setAlwaysOnTop(true);
-					refund.getContentPane().setEnabled(false);
-					refund.setBounds(100, 100, 741, 386);
-					refund.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					refund.getContentPane().setLayout(null);
-					refund.setVisible(true);
-					
-					JTextField textField = new JTextField();
-					textField.setBounds(147, 61, 204, 41);
-					refund.getContentPane().add(textField);
-					textField.setColumns(10);
-					
-					JLabel lblNewLabel = new JLabel("UID :");
-					lblNewLabel.setFont(new Font("新細明體", Font.PLAIN, 20));
-					lblNewLabel.setBounds(24, 60, 62, 41);
-					refund.getContentPane().add(lblNewLabel);
-					
-					JLabel lblTicketCode = new JLabel("Ticket Code :");
-					lblTicketCode.setFont(new Font("新細明體", Font.PLAIN, 20));
-					lblTicketCode.setBounds(24, 151, 113, 41);
-					refund.getContentPane().add(lblTicketCode);
-					
-					JTextField textField_1 = new JTextField();
-					textField_1.setColumns(10);
-					textField_1.setBounds(147, 151, 204, 41);
-					refund.getContentPane().add(textField_1);
-					
-					JLabel lblTicketCode_1 = new JLabel("\u522A\u6E1B\u4EBA\u6578 :");
-					lblTicketCode_1.setFont(new Font("新細明體", Font.PLAIN, 20));
-					lblTicketCode_1.setBounds(24, 249, 113, 41);
-					refund.getContentPane().add(lblTicketCode_1);
-					
-					JTextField textField_2 = new JTextField();
-					textField_2.setColumns(10);
-					textField_2.setBounds(147, 249, 204, 41);
-					refund.getContentPane().add(textField_2);
-					
-					JButton btnNewButton = new JButton("OK");
-					btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 20));
-					btnNewButton.setBounds(503, 249, 113, 41);
-					refund.getContentPane().add(btnNewButton);
-
-					btnNewButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							
-								JFrame output = new JFrame();
-								output.setAlwaysOnTop(true);
-								output.setBounds(100, 100, 352, 201);
-								output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-								output.getContentPane().setLayout(null);
-								output.setVisible(true);
-								
-								JTextField refundOutput = new JTextField();
-								refundOutput.setBounds(10, 10, 305, 95);
-								output.getContentPane().add(refundOutput);
-								refundOutput.setColumns(10);
-								
-								try {
-									refundOutput.setText(refundClass.Refund(textField.getText(), textField_1.getText(), Integer.parseInt(textField_2.getText())));
-								} catch (NumberFormatException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								} catch (IOException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-								JButton ok = new JButton("OK");
-								ok.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										output.setVisible(false);
-									}
-								});
-								ok.setFont(new Font("新細明體", Font.PLAIN, 20));
-								ok.setBounds(230, 115, 85, 39);
-								output.getContentPane().add(ok);
-								//System.out.println(refundClass.Refund(textField.getText(), textField_1.getText(), Integer.parseInt(textField_2.getText())));
-							
-						}
-					});
-				}
+		btnNewButton1 = new JButton("\u8A02\u7968");
+		btnNewButton1.setBackground(new Color(230,230,230));
+		btnNewButton1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				WindowBooking a = new WindowBooking();
 			}
 		});
-		btnNewButton_1.setFont(new Font("新細明體", Font.PLAIN, 20));
+		
+		lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setBounds(12, 63, 337, 142);
+		frame.getContentPane().add(lblNewLabel_1);
+		lblNewLabel_1.setIcon(new ImageIcon(windowDEMO.class.getResource("/image/\u4E0B\u8F09.png")));
+		btnNewButton1.setFont(new Font("標楷體", Font.BOLD, 30));
+		btnNewButton1.setBounds(460, 63, 131, 51);
+		frame.getContentPane().add(btnNewButton1);
+		
+		btnNewButton2 = new JButton("\u67E5\u8A62");
+		btnNewButton2.setBackground(new Color(230,230,230));
+		btnNewButton2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				WindowSearching s = new WindowSearching();
+			}
+		});
+		btnNewButton2.setFont(new Font("標楷體", Font.BOLD, 30));
+		btnNewButton2.setBounds(460, 126, 131, 51);
+		frame.getContentPane().add(btnNewButton2);
+		
+		btnNewButton3 = new JButton("\u9000\u7968");
+		btnNewButton3.setBackground(new Color(230,230,230));
+		btnNewButton3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				windowRefunding b = new windowRefunding();
+			}
+		});
+		btnNewButton3.setFont(new Font("標楷體", Font.BOLD, 30));
+		btnNewButton3.setBounds(460, 189, 131, 51);
+		frame.getContentPane().add(btnNewButton3);
+		
+		lblNewLabel = new JLabel("HSR \u7CFB\u7D71");
+		lblNewLabel.setForeground(new Color(25, 25, 112));
+		lblNewLabel.setFont(new Font("標楷體", Font.BOLD | Font.ITALIC, 30));
+		lblNewLabel.setBounds(413, 12, 180, 39);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.black);
+		panel.setBounds(12, 63, 337, 142);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
 		
 	}
 }
