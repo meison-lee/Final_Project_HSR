@@ -58,7 +58,7 @@ public class StationtrainBack {
 	 */
 	public StationtrainBack() {
 		
-		//initialize();
+		initialize();
 		
 	}
 	public void BackTime(String Date , String Time ,String Start , String End , String type , String[] array,String bDate , String bTime ) {
