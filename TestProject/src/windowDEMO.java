@@ -76,7 +76,7 @@ public class windowDEMO {
 		});
 		
 		lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(12, 12, 337, 142);
+		lblNewLabel_1.setBounds(12, 63, 337, 142);
 		frame.getContentPane().add(lblNewLabel_1);
 		lblNewLabel_1.setIcon(new ImageIcon(windowDEMO.class.getResource("/image/\u4E0B\u8F09.png")));
 		btnNewButton1.setFont(new Font("標楷體", Font.BOLD, 30));
@@ -88,7 +88,7 @@ public class windowDEMO {
 		btnNewButton2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Searching s = new Searching();
+				WindowSearching s = new WindowSearching();
 			}
 		});
 		btnNewButton2.setFont(new Font("標楷體", Font.BOLD, 30));
@@ -115,7 +115,7 @@ public class windowDEMO {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.black);
-		panel.setBounds(12, 12, 337, 142);
+		panel.setBounds(12, 63, 337, 142);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
