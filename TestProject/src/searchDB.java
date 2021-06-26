@@ -172,7 +172,6 @@ public class searchDB {
 			currentSeat = seatnos[i];
 			
 			T: for(int j = 0; j < way; j++) {
-				System.out.println(seatnos[i]);
 				if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
 						((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
 					
@@ -274,7 +273,6 @@ public class searchDB {
 	 */
 	public static void setSeatno(String date, String train, String start, String end, String seatNO)
 			throws IOException {
-
 		String ttt = "tabble";
 
 		BufferedReader rDB = new BufferedReader(new FileReader("Data/" + date + ".csv")); // here
@@ -283,82 +281,79 @@ public class searchDB {
 		// 找到指定train
 		String line = rDB.readLine();
 		sDB.write(line);
-		boolean found = false;
-		while (found == false) {
+		
+		while (true) {
 			line = rDB.readLine();
 			sDB.newLine();
 			sDB.write(line);
 			String[] tt = line.split(",");
 			if (tt[0].contains(train)) {
-				found = true;
-			} else {
-			}
-		}
-		// 找到起始、終點
-		String[] rows = new String[15];
-		// 要記錄是哪兩個站
-		int st = 0;
-		int s = 0, e = 0;
-		boolean matchS = false, matchE = false;
-		// 找到開始站，一路write到找到為止
-		try {
-
-			while (matchS == false) {
-				rows[st] = rDB.readLine();
-				if (rows[st].contains(start)) {
-					s = st;
-					e++;
-					matchS = true;
-				} else {
-					s++;
-					e++;
-					sDB.newLine();
-					sDB.write(rows[st]);
-				}
-				st++;
-			}
-			while (matchE == false) {
-				rows[st] = rDB.readLine();
-				if (rows[st].contains(end)) {
-					matchE = true;
-				} else {
-					e++;
-				}
-				st++;
-			}
-		} catch (Exception ee) {
-		}
-
-		// rows[s]就是從起始站
-		// rows[e]就是終點站
-
-		// 先找座位的橫的編號X
-		int x = 0;
-		String[] num = rows[2].split(","); // here
-		for (int t = 1; t <= 985; t++) {
-			if (num[t].contains(seatNO)) {
-				x = t;
 				break;
 			}
 		}
-		// 中間的站都變成array，指派第x個元素為1
-		String[] seats = new String[985];
+		
+		// 將該列車從折價到終站的行數塞進rows[]裡面
+		String[] rows = new String[15];
+		int st = 0;
+		
+		// 找到開始站，一路放進rows直到end station
+		while (true) {
+			rows[st] = rDB.readLine();
+			if (rows[st].split(",")[0].equals(end)) {
+				break;
+			}
+			st++;
+		}
 
-		for (int tt = s; tt <= e; tt++) {
-			seats = rows[tt].split(",");
-			seats[x] = "1";
-			rows[tt] = String.join(",", seats);
+		// 先找座位的橫的編號X
+		int x = 0;
+		String[] seatsno; // here
+		
+		for(int i = 0; i <= 3; i++) {
+			if (rows[i].split(",")[0].equals("Seats")) {
+				seatsno = rows[i].split(",");
+				for (int t = 0; t < 986; t++) {
+					if (seatsno[t].equals(seatNO)) {
+						x = t;
+						break;
+					}
+				}
+			}
+		}
+		
+		//x就是要更改的座位的橫坐標
+		//這裡來找Y座標
+		boolean onway = false;
+		
+		for (int i = 0; i < rows.length ;i++) {
+			if(onway) {
+				String tmp[] = rows[i].split(",");
+				tmp[x] = "1";
+				String ttmp = String.join(",", tmp);
+				rows[i] = ttmp;
+			}
+			else if(rows[i].split(",")[0].equals(start)) {
+				onway = true;
+				
+				String tmp[] = rows[i].split(",");
+				tmp[x] = "1";
+				String ttmp = String.join(",", tmp);
+				rows[i] = ttmp;
+			}
+			
 			sDB.newLine();
-			sDB.write(rows[tt]);
+			sDB.write(rows[i]);
+			
+			if(rows[i].split(",")[0].equals(end)) {
+				break;
+			}
 		}
 
 		// 剩下的再重新write一次
 		try {
-			int fake = 1;
-			while (fake == 1) {
+			while (true) {
 				sDB.newLine();
 				sDB.write(rDB.readLine());
-
 			}
 		} catch (Exception ee) {
 			ee.getMessage();
@@ -382,6 +377,7 @@ public class searchDB {
 			rDB2.close();
 			sDB2.close();
 		}
+		
 		File file_dulplicate = new File("Data/" + ttt + ".csv");
 		file_dulplicate.delete();
 	}
@@ -422,7 +418,7 @@ public class searchDB {
 				int tmp = Integer.valueOf(tickets[i]) - (Integer) arraylist.get(1);
 				tickets[i] = String.format("%d",tmp);
 				if (tmp == 0 && arraylist.size() > 2) {
-					tmp = Integer.valueOf(tickets[i+1]) - Integer.valueOf((String) arraylist.get(3));
+					tmp = Integer.valueOf(tickets[i+1]) - (Integer) arraylist.get(3);
 					tickets[i+1] = String.format("%d",tmp);
 				}
 			}
@@ -437,7 +433,6 @@ public class searchDB {
 			while (true) {
 				sDB.newLine();
 				sDB.write(rDB.readLine());
-
 			}
 		} catch (Exception ee) {
 			ee.getMessage();
