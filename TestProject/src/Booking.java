@@ -18,52 +18,37 @@ public class Booking {
 	
 	private int Direction; //去程方向
 	
-	JSONArray Davailable = new JSONArray(); //去回程列次JSONArray
-	JSONArray Ravailable = new JSONArray();
+	private JSONArray Davailable = new JSONArray(); //去回程列次JSONArray
+	private JSONArray Ravailable = new JSONArray();
 	
-	ArrayList<String> Dseatnos; //去回程 對應上面JSONArray第幾個列次 該列次分配給的位子
-	ArrayList<String> Rseatnos; 
+	private ArrayList<String> Dseatnos = new ArrayList<String>(); //去回程 對應上面JSONArray第幾個列次 該列次分配給的位子
+	private ArrayList<String> Rseatnos = new ArrayList<String>();
 	
 	CSVFile builder = new CSVFile(); //建檔的caller
 	
-	ArrayList<ArrayList<Object>> DEDarray = new ArrayList<ArrayList<Object>>(); //早鳥票特價 該列次 格式: 折扣 給的票數
-	ArrayList<ArrayList<Object>> REDarray = new ArrayList<ArrayList<Object>>();
+	private ArrayList<ArrayList<Object>> DEDarray = new ArrayList<ArrayList<Object>>(); //早鳥票特價 該列次 格式: 折扣 給的票數
+	private ArrayList<ArrayList<Object>> REDarray = new ArrayList<ArrayList<Object>>();
 	
-	ArrayList<String> DUDdiscount = new ArrayList<String>(); //大學生特價 該列次就是那個價格
-	ArrayList<String> RUDdiscount = new ArrayList<String>();
+	private ArrayList<String> DUDdiscount = new ArrayList<String>(); //大學生特價 該列次就是那個價格
+	private ArrayList<String> RUDdiscount = new ArrayList<String>();
 	
 	SimpleDateFormat OPformat = new SimpleDateFormat("yyyy-MM-dd"); //outputformat
 	
 	//以下為該search或trainnosearch結果的儲存地方(搜尋後選好的車次或是指定的車次)
 	
-	int Dint = -1; //此為search完選中的(列表中的第幾個)
-	int Rint = -1;
+	private int Dint = -1; //此為search完選中的(列表中的第幾個)
+	private int Rint = -1;
 	
-	JSONObject DTrain = new JSONObject();
-	JSONObject RTrain = new JSONObject();
+	private String Ddate = ""; //date形式
+	private String Rdate = ""; 
 	
-	ArrayList<Object> DED = new ArrayList<Object>();
-	ArrayList<Object> RED = new ArrayList<Object>();
+	private String DMonDay = ""; //MONDAY形式(方便讀檔案)
+	private String RMonDay = "";
 	
-	String DUD = new String();
-	String RUD = new String();
+	private String SStation = ""; //起終站
+	private String DStation = "";
 	
-	String Dtrainno = ""; //車次
-	String Rtrainno = "";
-	
-	String[] Dseatno  = null; //分配到的座位 以","分隔
-	String[] Rseatno  = null;
-	
-	String Ddate = ""; //date形式
-	String Rdate = ""; 
-	
-	String DMonDay = ""; //MONDAY形式(方便讀檔案)
-	String RMonDay = "";
-	
-	String SStation = ""; //起終站
-	String DStation = "";
-	
-	String ticketType = "standard"; //票種(折扣)
+	private String ticketType = "standard"; //票種(折扣)
 	
 	boolean BorS = false;
 	
@@ -71,6 +56,9 @@ public class Booking {
 	int normalT = 0;
 	int concessionT = 0;
 	int studentT = 0;
+	
+	String[][] Davareturn;
+	String[][] Ravareturn;
 	
 	public String Search(String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
 			String SStation, String DStation, //S始站, D終站
@@ -88,6 +76,13 @@ public class Booking {
 		this.concessionT = concessionT;
 		this.studentT = studentT;
 		this.totalT = normalT+concessionT+studentT;
+		
+		DEDarray.clear();
+		REDarray.clear();
+		DUDdiscount.clear();
+		RUDdiscount.clear();
+		Dseatnos.clear();
+		Rseatnos.clear();
 		
 		if ((totalT > 10) || ((Rdate != "")&&(totalT > 5))) {
 			throw new BookingExceptions("注意：訂單預定過多車票(每筆最多10張，來回車票獨立計算)");
@@ -250,7 +245,7 @@ public class Booking {
 		
 		//去程 //確認是否於五日前 
 		
-		if (AorW == 0 && totalT != 1) {
+		if (AorW != 0 && totalT != 1) {
 			throw new BookingExceptions("注意：乘車人數超過一人時無法使用偏好座位功能。");
 		}
 		
@@ -316,6 +311,7 @@ public class Booking {
 				else {
 					Rseatnos.add(tmp);
 					if (BorS == false) {
+						System.out.println("test");
 						if (Limitdate.before(ReCal)) {
 							REDarray.add(searchDB.checkEarly(RMonDay, trainno, 1));
 						}
@@ -355,10 +351,12 @@ public class Booking {
 							DEDarray.add(searchDB.checkEarly(DMonDay, trainno, normalT));
 						}
 						else {
+							System.out.println("BorS empty");
 							DEDarray.add(ttmp);
 						}
 					}
 					else {
+						System.out.println("empty");
 						DEDarray.add(ttmp);
 					}
 				}
@@ -409,6 +407,7 @@ public class Booking {
 		 * 大學生優惠（5折/75折/88折）票恕無法與其他優惠合併使用。
 		 */
 			if (studentT > 0) {
+				
 				JSONObject universityDiscount = JSONUtils.getJSONObjectFromFile("/universityDiscount.json");
 				JSONArray UDTrains = universityDiscount.getJSONArray("DiscountTrains");
 				//studentT				
@@ -461,7 +460,23 @@ public class Booking {
 			System.out.println("去程列車如下：\n");
 			System.out.println("車次   | 早鳥優惠 | 大學生優惠 | 出發時間 | 抵達時間 |");
 			
+			Davareturn = new String[Davailable.length()][5];
+			Ravareturn = new String[Ravailable.length()][5];
+			
 			for (int i = 0; i< Davailable.length();i++) {
+				ArrayList<String> tmp = new ArrayList<String>();
+				
+				tmp.add(TrainNoofAv(Davailable,i));
+				tmp.add(DEDarray.get(i).get(0).toString());
+				tmp.add(DUDdiscount.get(i));
+				
+				JSONArray timetable = Davailable.getJSONObject(i).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+				
+				tmp.add(Departuretime(SStation,timetable));
+				tmp.add(Arrivetime   (DStation,timetable));
+				
+				Davareturn[i] = tmp.toArray(new String[5]);
+				
 				System.out.print(TrainNoofAv(Davailable,i) + " |");
 				System.out.print(DEDarray.get(i).get(0).toString() + "折  |");
 				if (studentT > 0) {
@@ -471,8 +486,6 @@ public class Booking {
 					System.out.print("    折  |");
 				}
 				
-				JSONArray timetable = Davailable.getJSONObject(i).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
-				
 				System.out.print(" " + Departuretime(SStation,timetable) + " |");
 				System.out.print(" " + Arrivetime   (DStation,timetable) + " |");
 				
@@ -481,10 +494,25 @@ public class Booking {
 			}
 			
 			if (Rdate != "") {
+				
+				
 				System.out.println("回程列車如下：\n");
 				System.out.println("車次   | 早鳥優惠 | 大學生優惠 | 出發時間 | 抵達時間 |");
 				
 				for (int j = 0; j < Ravailable.length(); j++) {
+					ArrayList<String> tmp = new ArrayList<String>();
+					
+					tmp.add(TrainNoofAv(Ravailable,j));
+					tmp.add(REDarray.get(j).get(0).toString());
+					tmp.add(RUDdiscount.get(j));
+					
+					JSONArray timetable = Ravailable.getJSONObject(j).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+					
+					tmp.add(Departuretime(DStation,timetable));
+					tmp.add(Arrivetime   (SStation,timetable));
+					
+					Ravareturn[j] = tmp.toArray(new String[5]);
+					
 					System.out.print(TrainNoofAv(Ravailable,j) + " |");
 					System.out.print(REDarray.get(j).get(0).toString() + "折  |");
 					if (studentT > 0) {
@@ -493,8 +521,6 @@ public class Booking {
 					else {
 						System.out.print("    折  |");
 					}
-
-					JSONArray timetable = Ravailable.getJSONObject(j).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
 					
 					System.out.print(" " + Departuretime(DStation,timetable) + " |");
 					System.out.print(" " + Arrivetime   (SStation,timetable) + " |");
@@ -503,7 +529,7 @@ public class Booking {
 					System.out.println();
 				}
 			}
-			
+						
 			return "訂票搜尋結果顯示完畢";
 		}
 		
@@ -518,11 +544,25 @@ public class Booking {
 			System.out.println("0000  | 00:00 | 00:00 |");
 			System.out.println("車次   | 出發時間 | 抵達時間 |");
 			
+			Davareturn = new String[Davailable.length()][5];
+			Ravareturn = new String[Ravailable.length()][5];
+			
 			for (int i = 0; i< Davailable.length();i++) {
-				System.out.print(TrainNoofAv(Davailable,i) + " |");
+				ArrayList<String> tmp = new ArrayList<String>();
+				
+				tmp.add(TrainNoofAv(Davailable,i));
+				tmp.add("");
+				tmp.add("");
 				
 				JSONArray timetable = Davailable.getJSONObject(i).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
 				
+				tmp.add(Departuretime(SStation,timetable));
+				tmp.add(Arrivetime   (DStation,timetable));
+				
+				Davareturn[i] = tmp.toArray(new String[5]);
+				
+				System.out.print(TrainNoofAv(Davailable,i) + " |");
+								
 				System.out.print(" " + Departuretime(SStation,timetable) + " |");
 				System.out.print(" " + Arrivetime   (DStation,timetable) + " |");
 				
@@ -535,9 +575,21 @@ public class Booking {
 				System.out.println("車次   | 出發時間 | 抵達時間 |");
 				
 				for (int j = 0; j < Ravailable.length(); j++) {
-					System.out.print(TrainNoofAv(Ravailable,j) + " |");
-
+					
+					ArrayList<String> tmp = new ArrayList<String>();
+					
+					tmp.add(TrainNoofAv(Ravailable,j));
+					tmp.add("");
+					tmp.add("");
+					
 					JSONArray timetable = Ravailable.getJSONObject(j).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+					
+					tmp.add(Departuretime(DStation,timetable));
+					tmp.add(Arrivetime   (SStation,timetable));
+					
+					Ravareturn[j] = tmp.toArray(new String[5]);
+					
+					System.out.print(TrainNoofAv(Ravailable,j) + " |");
 					
 					System.out.print("| " + Departuretime(DStation,timetable) + " |");
 					System.out.print("| " + Arrivetime   (SStation,timetable) + " |");
@@ -551,12 +603,81 @@ public class Booking {
 		}
 	}
 	
-	public void SearchSelect(int Dint, int Rint) {
-		this.Dint = Dint;
-		this.Rint = Rint;
+	/**
+	 * @return Davareturn
+	 */
+	public String[][] getDavareturn(){
+		return Davareturn;
 	}
 	
-	public void TrainnoSearchSelect(String DTrainno,String RTrainno,
+	/**
+	 * @return Ravareturn
+	 */
+	public String[][] getRavareturn(){
+		return Ravareturn;
+	}
+	
+	/**
+	 * @param Dint 存入去程選擇 
+	 * @param Rint 存入回程選擇 
+	 * @return 
+	 */
+	
+	public String[][] SearchSelect(int Dint, int Rint) {
+		this.Dint = Dint;
+		this.Rint = Rint;
+		
+		JSONArray Dtimetable = Davailable.getJSONObject(Dint).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+		JSONArray Rtimetable = Ravailable.getJSONObject(Rint).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+		
+		
+		
+		ArrayList<String> gowayresult = new ArrayList<String>();
+		ArrayList<String> backwayresult = new ArrayList<String>();
+		
+		//行程 日期 車次 起程站 到達站 出發時間 到達時間
+		//去
+		//回
+		
+		gowayresult.add("去程");
+		gowayresult.add(Ddate.split(" ")[0]);
+		gowayresult.add(TrainNoofAv(Dtimetable, Dint));
+		gowayresult.add(SStation);
+		gowayresult.add(DStation);
+		gowayresult.add(Departuretime(SStation, Dtimetable));
+		gowayresult.add(Arrivetime(DStation, Dtimetable));
+		
+		if(Rdate.equals("") == false) {
+			backwayresult.add("回程");
+			backwayresult.add(Rdate.split(" ")[0]);
+			backwayresult.add(TrainNoofAv(Rtimetable, Rint));
+			backwayresult.add(DStation);
+			backwayresult.add(SStation);
+			backwayresult.add(Departuretime(SStation, Rtimetable));
+			backwayresult.add(Arrivetime(DStation, Rtimetable));
+		}
+		
+		String[][] result = {gowayresult.toArray(new String[gowayresult.size()]) , backwayresult.toArray(new String[backwayresult.size()])};
+		
+		return result;
+	}
+	
+	/**
+	 * @param DTrainno
+	 * @param RTrainno
+	 * @param Ddate
+	 * @param Rdate
+	 * @param SStation
+	 * @param DStation
+	 * @param normalT
+	 * @param concessionT
+	 * @param studentT
+	 * @param AorW
+	 * @param BorS
+	 * @return 二維列表 有兩行(去回) 每行的格式如右:行程 日期 車次 起程站 到達站 出發時間 到達時間 
+	 * @throws BookingExceptions
+	 */
+	public String[][] TrainnoSearchSelect(String DTrainno,String RTrainno,
 									String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
 									String SStation, String DStation, //S始站, D終站
 									int normalT, int concessionT, int studentT, //一般票, 優待票(5折), 大學生票
@@ -581,6 +702,40 @@ public class Booking {
 				}
 			}
 		}
+		
+		JSONArray Dtimetable = Davailable.getJSONObject(Dint).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+		JSONArray Rtimetable = Ravailable.getJSONObject(Rint).getJSONObject("GeneralTimetable").getJSONArray("StopTimes");
+		
+		
+		
+		ArrayList<String> gowayresult = new ArrayList<String>();
+		ArrayList<String> backwayresult = new ArrayList<String>();
+		
+		//行程 日期 車次 起程站 到達站 出發時間 到達時間
+		//去
+		//回
+		
+		gowayresult.add("去程");
+		gowayresult.add(Ddate.split(" ")[0]);
+		gowayresult.add(DTrainno);
+		gowayresult.add(SStation);
+		gowayresult.add(DStation);
+		gowayresult.add(Departuretime(SStation, Dtimetable));
+		gowayresult.add(Arrivetime(DStation, Dtimetable));
+		
+		if(Rdate.equals("") == false) {
+			backwayresult.add("回程");
+			backwayresult.add(Rdate.split(" ")[0]);
+			backwayresult.add(RTrainno);
+			backwayresult.add(DStation);
+			backwayresult.add(SStation);
+			backwayresult.add(Departuretime(SStation, Rtimetable));
+			backwayresult.add(Arrivetime(DStation, Rtimetable));
+		}
+		
+		String[][] result = {gowayresult.toArray(new String[gowayresult.size()]) , backwayresult.toArray(new String[backwayresult.size()])};
+		
+		return result;
 	}
 	
 	
@@ -777,7 +932,7 @@ public class Booking {
 		
 		int payment = Integer.parseInt(Dprice) + Integer.parseInt(Rprice);
 		
-		order.put("code", seed);
+		order.put("code", String.format("%09d", seed));
 		order.put("uid", uid);
 		order.put("payment", payment);
 		//to.put("CarType", carType);
@@ -796,6 +951,9 @@ public class Booking {
 		}
 		
 		String[] DticketTypes = DtTypes.toArray(new String[DtTypes.size()]);
+		
+		DDate = DDate.split(" ")[0];
+		RDate = RDate.split(" ")[0];
 		
 		goway.put("DTrainNo", DTrainNo);
 		goway.put("date", DDate);
