@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 
 public class WindowSearchResult {
 
-	private JFrame frame;
+	private JFrame SRframe;
 	private String [] data;
 	private int row;
 	private String uid , code,ticketsType;
@@ -44,18 +44,22 @@ public class WindowSearchResult {
 	 * Create the application.
 	 */
 	public WindowSearchResult(){
-		initialize();
+		//initialize();
 	}
 	public void var(String [] array ,String uid ,String code,String type,int count,int price) {
 		this.uid = uid;
 		this.code = code;
+		System.out.println(this.code);
+		System.out.println(array.length);
 		data = new String[array.length];
 		for (int i = 0; i < data.length ; i ++) {
 			data[i] = array[i];
+			System.out.println(data[i]);
 		}
 		ticketsCount = count;
 		ticketsType = type;
 		this.price = price;
+		System.out.println(1);
 		initialize();
 	}
 //	public void getother(String type,String count,String price) {
@@ -81,17 +85,17 @@ public class WindowSearchResult {
 		
 		
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1018, 375);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.getContentPane().setLayout(null);
+		SRframe = new JFrame();
+		SRframe.setBounds(100, 100, 1018, 375);
+		SRframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		SRframe.setVisible(true);
+		SRframe.getContentPane().setLayout(null);
         
         
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(13, 198, 977, 56);
-		frame.getContentPane().add(panel);
+		SRframe.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
@@ -117,15 +121,15 @@ public class WindowSearchResult {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//////////////////////////click ok
+				SRframe.setVisible(false);
 			}
 		});
 		btnNewButton.setBounds(857, 291, 135, 46);
-		frame.getContentPane().add(btnNewButton);
+		SRframe.getContentPane().add(btnNewButton);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(12, 36, 488, 56);
-		frame.getContentPane().add(panel_1);
+		SRframe.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		panel_1.setBackground(new Color(230,230,230));
 		
@@ -151,7 +155,7 @@ public class WindowSearchResult {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(498, 36, 495, 56);
-		frame.getContentPane().add(panel_2);
+		SRframe.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		panel_2.setBackground(new Color(230,230,230));
 		
@@ -177,7 +181,7 @@ public class WindowSearchResult {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 138, 980, 126);
-		frame.getContentPane().add(scrollPane);
+		SRframe.getContentPane().add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
