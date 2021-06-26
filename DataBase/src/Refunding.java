@@ -40,6 +40,8 @@ private int number,remainPeople;
 				}
 		}
 		//booking variables : code , start , train number , Date , seats array
+		
+		//timetable.json
 		for(int j = 0; j < obj.length(); j++) {	
 		    JSONObject train = obj.getJSONObject(j);
 		    JSONObject timetable = train.getJSONObject("GeneralTimetable");
