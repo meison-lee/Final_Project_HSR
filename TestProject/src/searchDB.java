@@ -18,6 +18,83 @@ import java.util.List;
  *
  */
 public class searchDB {
+	
+	public static String getBSeatno(String date, String train, String start, String end, int number) throws IOException {
+		BufferedReader rDB = new BufferedReader(new FileReader("Data/" + date + ".csv"));
+
+		// 427 493
+
+		String line = " ";
+
+		while (true) {
+			line = rDB.readLine();
+
+			if (line != null) {
+				String[] tt = line.split(",");
+				if (tt[0].contains(train)) break;
+			}
+		}
+
+		String[] seatnos = null; // 座位號碼
+		ArrayList<List<String>> seats = new ArrayList<List<String>>(); // 所有座位情形的二維ArrayList/array
+
+		boolean in = false;
+		int    way = 0;
+
+		for (int st = 0; st < 15; st++) {
+
+			String tmp = rDB.readLine();
+
+			if (tmp.contains("Seats")) {
+				seatnos = tmp.split(",");
+			}
+
+			if (in) {
+				seats.add(Arrays.asList(tmp.split(",")));
+				way++;
+				if (tmp.contains(end)) {
+					break;
+				}
+			}
+
+			if (tmp.contains(start)) {
+				seats.add(Arrays.asList(tmp.split(",")));
+				in = true;
+				way++;
+			}
+		}
+
+		// 直的是相同座位，橫的是相同站
+		// 先以一個位子為單位(大圈for)，直的向下加之後(內圈for)，再進入下一次的迴圈
+		
+		String seatno = "";
+		
+		int Tnumber = 0;
+		
+		for(int i = 427; i < 493; i++) {
+			T: for(int j = 0; j < way; j++) {
+				if (Tnumber == number) {
+					break T;
+				}
+				if (seats.get(j).get(i).equals("1") ) {
+					break T;
+				}
+				else if(j == way - 1) {
+					if(seatno.equals("")) {
+						seatno = seatnos[i];
+					}
+					else {
+						seatno = seatno + "," + seatnos[i];
+					}
+					Tnumber++;
+				}
+			}
+		}
+		
+		rDB.close();
+		
+		return seatno;
+	}
 
 	/**
 	 * @param date     日期形式如0628不用加.csv
@@ -191,6 +268,84 @@ public class searchDB {
 		rDB.close();
 		return seatno;
 	}
+	
+	public static String getBSeatnoSpecial(String date, String train, String start, String end, String kind)
+			throws IOException {
+		
+		BufferedReader rDB = new BufferedReader(new FileReader("Data/" + date + ".csv"));
+// 找到指定train
+		String line = " ";
+
+		while (true) {
+			line = rDB.readLine();
+
+			if (line != null) {
+				String[] tt = line.split(",");
+				if (tt[0].contains(train)) break;
+			}
+		}
+		
+//找起始站、終點站
+		// 建一個array元素是各個站的string，預設空間十個車站
+		String[] seatnos = null; // 座位號碼
+		ArrayList<List<String>> seats = new ArrayList<List<String>>(); // 所有座位情形的二維ArrayList/array
+
+		boolean in = false;
+		int    way = 0;
+
+		for (int st = 0; st < 15; st++) {
+
+			String tmp = rDB.readLine();
+
+			if (tmp.contains("Seats")) {
+				seatnos = tmp.split(",");
+			}
+
+			if (in) {
+				seats.add(Arrays.asList(tmp.split(",")));
+				way++;
+				if (tmp.contains(end)) {
+					break;
+				}
+			}
+
+			if (tmp.contains(start)) {
+				seats.add(Arrays.asList(tmp.split(",")));
+				in = true;
+				way++;
+			}
+		}
+
+		// 直的是相同座位，橫的是相同站
+		// 先以一個位子為單位(大圈for)，直的向下加之後(內圈for)，再進入下一次的迴圈
+		
+		String seatno = "";
+		
+		String currentSeat;
+		
+		for(int i = 427; i < 493 ; i++) {
+			currentSeat = seatnos[i];
+			
+			T: for(int j = 0; j < way; j++) {
+				if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
+						((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
+					
+				}else {
+					break T;
+				}
+		
+				if (seats.get(j).get(i).equals("1") ) {
+					break T;
+				}
+				else if(j == way - 1) {
+					seatno = seatnos[i];
+				}
+			}
+		}
+		
+		rDB.close();
+		return seatno;
+	}
 
 	/**
 	 * @param date
@@ -262,7 +417,7 @@ public class searchDB {
 
 		return A;
 	}
-
+	
 	/**
 	 * @param date
 	 * @param train
@@ -382,7 +537,6 @@ public class searchDB {
 		file_dulplicate.delete();
 	}
 	
-
 	
 	public static void setED(String date, String train, ArrayList<Object> arraylist) throws IOException {
 		String ttt = "tabble";

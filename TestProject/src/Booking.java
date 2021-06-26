@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
@@ -67,6 +65,8 @@ public class Booking {
 	
 	String ticketType = "standard"; //票種(折扣)
 	
+	boolean BorS = false;
+	
 	int totalT = 0;
 	int normalT = 0;
 	int concessionT = 0;
@@ -77,7 +77,8 @@ public class Booking {
 	public String Search(String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
 			String SStation, String DStation, //S始站, D終站
 			int normalT, int concessionT, int studentT, //一般票, 優待票(5折), 大學生票
-			int AorW, boolean BorS) throws IOException // 走道or靠窗(0沒要求1靠窗2走道), true商務 false標準 車廂
+			int AorW, boolean BorS) // 走道or靠窗(0沒要求1靠窗2走道), true商務 false標準 車廂
+			throws IOException, BookingExceptions
 	{
 		
 		this.SStation = SStation; 
@@ -248,7 +249,7 @@ public class Booking {
 		//把Llimitdate改為今日後五天(28-23) 
 		
 		Limitdate.add(Calendar.DAY_OF_MONTH, -23);
-		 
+		
 		//去程 //確認是否於五日前 
 		
 		if ((totalT == 1) && (AorW != 0)) {
@@ -282,7 +283,6 @@ public class Booking {
 						ArrayList<Object> ttmp = new ArrayList<Object> ();
 						DEDarray.add(ttmp);
 					}
-					
 				}
 			}
 			
@@ -358,9 +358,7 @@ public class Booking {
 		//商務則沒有各種優待票
 		
 		if (BorS == false) {
-		
-		
-					
+			
 		//大學生票 (只有折扣)
 		/*
 		 * 大學生優惠（5折/75折/88折）票恕無法與其他優惠合併使用。
@@ -415,34 +413,6 @@ public class Booking {
 			
 			else;
 			
-			
-		//優待票 (各類價格)
-		
-		//整車正常票(分一般與商務)
-			
-			//輸出搜尋結果
-		//1.
-		// 首先選擇車次
-			// 去程：起站終站 日期(星期)
-			// 選擇按鈕 車次 全票優惠 出發時間 到達時間 行車時間
-			// 
-			// 回程：起站終站 日期(星期)
-			// 選擇按鈕 車次 全票優惠 出發時間 到達時間 行車時間
-			// 
-			// 車廂:標準/商務 票數：全票幾張|愛心票幾張|敬老票幾張
-			//
-			// 重新查詢                         確認車次
-		//2.
-		// 再來確認票
-			// 行程 日期 車次 起站 終站 出發 到達 全票(含價格) 其他票種數量(含價格) 小計算
-			// 去
-			// 回
-			// 車廂 票數 總票價
-		// 取票人資訊
-			// 識別碼(身分證或護照號碼) 必要
-			// 電話 email等
-		// 完全訂位
-			
 			System.out.println("去程列車如下：\n");
 			System.out.println("車次   | 早鳥優惠 | 大學生優惠 | 出發時間 | 抵達時間 |");
 			
@@ -495,8 +465,8 @@ public class Booking {
 		// END -----> 輸出商務車廂的車票價格、並處理劃為(改變excel座位檔案)
 		else {
 			
+			this.BorS = true;
 			ticketType = "business";
-
 			//輸出搜尋結果
 			
 			System.out.println("去程列車如下：\n");
@@ -541,10 +511,11 @@ public class Booking {
 		this.Rint = Rint;
 	}
 	
-	public void TrainnoSearchSelect(String Trainno,String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
+	public void TrainnoSearchSelect(String DTrainno,String RTrainno,
+									String Ddate, String Rdate, // Ddate出發時間, Rdate返程時間
 									String SStation, String DStation, //S始站, D終站
 									int normalT, int concessionT, int studentT, //一般票, 優待票(5折), 大學生票
-									int AorW, boolean BorS) {
+									int AorW, boolean BorS) throws BookingExceptions {
 		try {
 			this.Search(Ddate, Rdate, SStation, DStation, normalT, concessionT, studentT, AorW, BorS);
 		} catch (IOException e) {
@@ -553,14 +524,16 @@ public class Booking {
 		
 		
 		for(int d = 0;d < Davailable.length();d++) {
-			if (Trainno.equals(TrainNoofAv(Davailable, d))){
+			if (DTrainno.equals(TrainNoofAv(Davailable, d))){
 				this.Dint = d;
 			}
 		}
 		
-		for(int r = 0;r < Ravailable.length();r++) {
-			if (Trainno.equals(TrainNoofAv(Ravailable, r))){
-				this.Rint = r;
+		if(RTrainno.equals("") == false) {
+			for(int r = 0;r < Ravailable.length();r++) {
+				if (RTrainno.equals(TrainNoofAv(Ravailable, r))){
+					this.Rint = r;
+				}
 			}
 		}
 	}
