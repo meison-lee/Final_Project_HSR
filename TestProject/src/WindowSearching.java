@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Searching {
+public class WindowSearching {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -22,7 +22,7 @@ public class Searching {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Searching window = new Searching();
+					WindowSearching window = new WindowSearching();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,7 @@ public class Searching {
 	/**
 	 * Create the application.
 	 */
-	public Searching() {
+	public WindowSearching() {
 		initialize();
 	}
 
