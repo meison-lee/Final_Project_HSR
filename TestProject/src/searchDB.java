@@ -157,21 +157,26 @@ public class searchDB {
 		int Tnumber = 0;
 		
 		for(int i = 1; i < seatnos.length - 1 ; i++) {
-			T: for(int j = 0; j < way; j++) {
-				if (Tnumber == number) {
-					break T;
-				}
-				if (seats.get(j).get(i).equals("1") ) {
-					break T;
-				}
-				else if(j == way - 1) {
-					if(seatno.equals("")) {
-						seatno = seatnos[i];
+			if( i == 427) {
+				i = 493;
+			}
+			else {
+				T: for(int j = 0; j < way; j++) {
+					if (Tnumber == number) {
+						break T;
 					}
-					else {
-						seatno = seatno + "," + seatnos[i];
+					if (seats.get(j).get(i).equals("1") ) {
+						break T;
 					}
-					Tnumber++;
+					else if(j == way - 1) {
+						if(seatno.equals("")) {
+							seatno = seatnos[i];
+						}
+						else {
+							seatno = seatno + "," + seatnos[i];
+						}
+						Tnumber++;
+					}
 				}
 			}
 		}
@@ -246,23 +251,28 @@ public class searchDB {
 		String currentSeat;
 		
 		for(int i = 1; i < seatnos.length - 1 ; i++) {
-			currentSeat = seatnos[i];
+			if(i == 427) {
+				i = 493;
+			}else {
+				currentSeat = seatnos[i];
+				
+				T: for(int j = 0; j < way; j++) {
+					if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
+							((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
+						
+					}else {
+						break T;
+					}
 			
-			T: for(int j = 0; j < way; j++) {
-				if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
-						((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
-					
-				}else {
-					break T;
-				}
-		
-				if (seats.get(j).get(i).equals("1") ) {
-					break T;
-				}
-				else if(j == way - 1) {
-					seatno = seatnos[i];
+					if (seats.get(j).get(i).equals("1") ) {
+						break T;
+					}
+					else if(j == way - 1) {
+						seatno = seatnos[i];
+					}
 				}
 			}
+			
 		}
 		
 		rDB.close();
@@ -330,7 +340,7 @@ public class searchDB {
 				if (((currentSeat.contains("C") || currentSeat.contains("D")) && kind.equals("aisle")) || 
 						((currentSeat.contains("A") || currentSeat.contains("E")) && kind.equals("window"))) {
 					
-				}else {
+				} else {
 					break T;
 				}
 		
